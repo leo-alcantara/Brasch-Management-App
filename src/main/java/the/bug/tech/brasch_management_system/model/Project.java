@@ -14,7 +14,7 @@ public class Project {
     private String projectName;
     private String projectDescription;
     private String projectLocal;
-    private ProjectStatus projectStatus;
+    private Status status;
     private LocalDate projectedStartDate;
     private LocalDate projectedConclusionDate;
 
@@ -45,16 +45,16 @@ public class Project {
     private List<ContactPerson> contactPerson;
 
     public Project() {
+
     }
 
     public Project(String projectName, String projectDescription, String projectLocal,
-                   the.bug.tech.brasch_management_system.model.ProjectStatus projectStatus,
-                   LocalDate projectedStartDate, LocalDate projectedConclusionDate, Company company,
-                   ProjectManager projectManager, List<ContactPerson> contactPerson) {
+                   Status status, LocalDate projectedStartDate, LocalDate projectedConclusionDate,
+                   Company company, ProjectManager projectManager, List<ContactPerson> contactPerson) {
         this.projectName = projectName;
         this.projectDescription = projectDescription;
         this.projectLocal = projectLocal;
-        this.projectStatus = projectStatus;
+        this.status = status;
         this.projectedStartDate = projectedStartDate;
         this.projectedConclusionDate = projectedConclusionDate;
         this.company = company;
@@ -62,10 +62,11 @@ public class Project {
         this.contactPerson = contactPerson;
     }
 
-    public Project(String projectName, String projectDescription, ProjectStatus projectStatus, Company company, List<ContactPerson> contactPerson) {
+    public Project(String projectName, String projectDescription, Status status, Company company,
+                   List<ContactPerson> contactPerson) {
         this.projectName = projectName;
         this.projectDescription = projectDescription;
-        this.projectStatus = projectStatus;
+        this.status = status;
         this.company = company;
         this.contactPerson = contactPerson;
     }
@@ -104,12 +105,12 @@ public class Project {
         this.projectLocal = projectLocal;
     }
 
-    public ProjectStatus getProjectStatus() {
-        return projectStatus;
+    public Status getProjectStatus() {
+        return status;
     }
 
-    public void setProjectStatus(ProjectStatus projectStatus) {
-        this.projectStatus = projectStatus;
+    public void setProjectStatus(Status projectStatus) {
+        this.status = projectStatus;
     }
 
     public LocalDate getProjectedStartDate() {
@@ -172,7 +173,7 @@ public class Project {
                 ", projectName='" + projectName + '\'' +
                 ", projectDescription='" + projectDescription + '\'' +
                 ", projectLocal='" + projectLocal + '\'' +
-                ", projectStatus=" + projectStatus +
+                ", status=" + status +
                 ", projectedStartDate=" + projectedStartDate +
                 ", projectedConclusionDate=" + projectedConclusionDate +
                 ", company=" + company +

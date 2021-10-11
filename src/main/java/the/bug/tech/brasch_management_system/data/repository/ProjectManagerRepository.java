@@ -9,7 +9,7 @@ public interface ProjectManagerRepository extends CrudRepository <ProjectManager
 
     @Query("SELECT pm FROM ProjectManager pm JOIN FETCH pm.projectManagerPerson AS " +
             "pmp WHERE UPPER(CONCAT(pmp.firstName, pmp.lastName)) = UPPER(:name)")
-    ProjectManager findProjectManagerByName(@Param("name"), String name);
+    ProjectManager findProjectManagerByName(@Param("name") String name);
 
     @Query("SELECT pm FROM ProjectManager pm JOIN FETCH pm.projectList AS p WHERE UPPER(p.projectName) = UPPER(:projectName)")
     ProjectManager findProjectManagerByProject(@Param("projectName") String projectName);

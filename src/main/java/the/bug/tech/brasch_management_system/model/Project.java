@@ -1,5 +1,7 @@
 package the.bug.tech.brasch_management_system.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -9,8 +11,9 @@ import java.util.Objects;
 public class Project {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int projectId;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private String projectId;
     private String projectName;
     private String projectDescription;
     private String projectLocal;
@@ -73,11 +76,11 @@ public class Project {
 
     //Convenience Methods (ContactPerson, ProjectManager)
 
-    public int getProjectId() {
+    public String getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(int projectId) {
+    public void setProjectId(String projectId) {
         this.projectId = projectId;
     }
 

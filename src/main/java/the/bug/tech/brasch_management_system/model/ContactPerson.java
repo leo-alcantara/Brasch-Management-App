@@ -1,5 +1,7 @@
 package the.bug.tech.brasch_management_system.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -8,8 +10,9 @@ import java.util.Objects;
 public class ContactPerson {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int contactPersonId;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private String contactPersonId;
 
     @OneToOne(cascade = CascadeType.ALL,
             fetch = FetchType.EAGER)
@@ -48,11 +51,11 @@ public class ContactPerson {
         this.company = company;
     }
 
-    public int getContactPersonId() {
+    public String getContactPersonId() {
         return contactPersonId;
     }
 
-    public void setContactPersonId(int contactPersonId) {
+    public void setContactPersonId(String contactPersonId) {
         this.contactPersonId = contactPersonId;
     }
 

@@ -1,15 +1,19 @@
 package the.bug.tech.brasch_management_system.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 public class Company {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int companyId;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private String companyId;
     private String companyName;
     private String companyAddress;
     private String companyPhoneNumber;
@@ -44,11 +48,11 @@ public class Company {
 
     //Convenience Methods(Project, ContactPerson)
 
-    public int getCompanyId() {
+    public String getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(int companyId) {
+    public void setCompanyId(String companyId) {
         this.companyId = companyId;
     }
 

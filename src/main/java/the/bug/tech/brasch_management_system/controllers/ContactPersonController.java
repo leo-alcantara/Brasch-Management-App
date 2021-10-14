@@ -19,25 +19,25 @@ public class ContactPersonController {
         this.contactPersonService = contactPersonService;
     }
 
-    @GetMapping("/api/contactperson")
+    @PostMapping("/api/contact-person")
     public ResponseEntity<ContactPerson> create(@RequestBody ContactPerson contactPerson){
         ContactPerson saved= contactPersonService.createContactPerson(contactPerson);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
-    @GetMapping("/api/contactperson/{id}")
+    @GetMapping("/api/contact-person/{id}")
     public ResponseEntity<ContactPerson> findById(@PathVariable("id") String contactPersonId){
         ContactPerson foundById= contactPersonService.findById(contactPersonId);
         return ResponseEntity.ok(foundById);
     }
 
-    @GetMapping("/api/contactperson")
+   /* @GetMapping("/api/contact-person")
     public ResponseEntity<List<ContactPerson>> findAll(){
         List<ContactPerson> allFound= contactPersonService.findAll();
         return ResponseEntity.ok(allFound);
-    }
+    }*/
 
-    @PutMapping("/api/companyperson/{id}")
+    @PutMapping("/api/contact-person/{id}")
     public ResponseEntity<ContactPerson> update(@PathVariable("id") String contactPersonId,
                                                 @RequestBody ContactPerson contactPerson){
         if(contactPersonId.equals(contactPerson.getContactPersonId())){
@@ -48,25 +48,25 @@ public class ContactPersonController {
         }
     }
 
-    @DeleteMapping("/api/contactperson/{id}")
+    @DeleteMapping("/api/contact-person/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") String contactPersonId){
         contactPersonService.delete(contactPersonId);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/api/contactperson/{contactPersonName}")
+    @GetMapping("/api/contact-person/{contactPersonName}")
     public ResponseEntity<ContactPerson> findContactPersonByNameContainsIgnoreCase(@PathVariable("contactPersonName") String contactPersonName){
         ContactPerson foundContactPerson= contactPersonService.findContactPersonByNameContainsIgnoreCase(contactPersonName);
         return ResponseEntity.ok(foundContactPerson);
     }
 
-    @GetMapping("/api/contactperson/{companyName}")
+    @GetMapping("/api/contact-person/{companyName}")
     public ResponseEntity<List<ContactPerson>> findContactPersonByCompanyContainsIgnoreCase(@PathVariable("companyName") String companyName){
         List<ContactPerson> foundPeople= contactPersonService.findContactPersonByCompanyContainsIgnoreCase(companyName);
         return ResponseEntity.ok(foundPeople);
     }
 
-    @GetMapping("/api/contactperson/{projectName}")
+    @GetMapping("/api/contact-person/{projectName}")
     public ResponseEntity<List<ContactPerson>> findContactPersonByProjectContainsIgnoreCase(@PathVariable("projectName") String projectName){
         List<ContactPerson> foundPeople= contactPersonService.findContactPersonByProjectContainsIgnoreCase(projectName);
         return ResponseEntity.ok(foundPeople);

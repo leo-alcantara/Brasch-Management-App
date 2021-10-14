@@ -9,7 +9,6 @@ import the.bug.tech.brasch_management_system.service.CompanyService;
 
 import java.util.List;
 
-
 @RestController
 public class CompanyController {
 
@@ -64,8 +63,8 @@ public class CompanyController {
 
     @GetMapping("/api/company/{projectName}")
     public ResponseEntity<Company> findCompanyByProjectNameContainsIgnoreCase(@PathVariable("projectName") String projectName) {
-        Company foundCompany = companyService.findCompanyByProjectNameContainsIgnoreCase(projectName);
-        return ResponseEntity.ok(foundCompany);
+        Company foundCompanies = companyService.findCompanyByProjectNameContainsIgnoreCase(projectName);
+        return ResponseEntity.ok(foundCompanies);
     }
 
     @GetMapping("/api/company/{name}")

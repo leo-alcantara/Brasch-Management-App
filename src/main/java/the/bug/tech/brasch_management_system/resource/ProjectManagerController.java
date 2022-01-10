@@ -1,5 +1,6 @@
-package the.bug.tech.brasch_management_system.controllers;
+package the.bug.tech.brasch_management_system.resource;
 
+import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import the.bug.tech.brasch_management_system.model.ProjectManager;
 import the.bug.tech.brasch_management_system.service.ProjectManagerService;
 
 import java.util.List;
+import java.util.concurrent.CompletionStage;
 
 @RestController
 public class ProjectManagerController {
@@ -55,15 +57,15 @@ public class ProjectManagerController {
     }
 
     @GetMapping("/api/project-manager/{projectManagerName}")
-    public ResponseEntity<ProjectManager> findProjectManagerByNameContainsIgnoreCase(@PathVariable("projectManagerName") String projectManagerName){
-        ProjectManager found= projectManagerService.findProjectManagerByNameContainsIgnoreCase(projectManagerName);
+    public ResponseEntity<CompletionStage<Option<ProjectManager>>> findProjectManagerByNameContainsIgnoreCase(@PathVariable("projectManagerName") String projectManagerName){
+        CompletionStage<Option<ProjectManager>> found= projectManagerService.findProjectManagerByNameContainsIgnoreCase(projectManagerName);
         return ResponseEntity.ok(found);
     }
 
 
     @GetMapping("/api/project-manager/{projectName}")
-    public ResponseEntity<ProjectManager> findProjectManagerByProjectContainsIgnoreCase(@PathVariable("projectName") String projectName){
-         ProjectManager found= projectManagerService.findProjectManagerByProjectContainsIgnoreCase(projectName);
+    public ResponseEntity<CompletionStage<Option<ProjectManager>>> findProjectManagerByProjectContainsIgnoreCase(@PathVariable("projectName") String projectName){
+         CompletionStage<Option<ProjectManager>> found= projectManagerService.findProjectManagerByProjectContainsIgnoreCase(projectName);
          return ResponseEntity.ok(found);
     }
 

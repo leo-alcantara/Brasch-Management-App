@@ -1,5 +1,6 @@
-package the.bug.tech.brasch_management_system.controllers;
+package the.bug.tech.brasch_management_system.resource;
 
+import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import the.bug.tech.brasch_management_system.model.Company;
 import the.bug.tech.brasch_management_system.service.CompanyService;
 
 import java.util.List;
+import java.util.concurrent.CompletionStage;
 
 @RestController
 public class CompanyController {
@@ -56,20 +58,20 @@ public class CompanyController {
 
 
     @GetMapping("/api/company/{companyName}")
-    public ResponseEntity<Company> findCompanyByCompanyNameContainsIgnoreCase(@PathVariable("companyName") String companyName) {
-        Company foundCompany = companyService.findCompanyByCompanyNameContainsIgnoreCase(companyName);
+    public ResponseEntity<CompletionStage<Option<Company>>> findCompanyByCompanyNameContainsIgnoreCase(@PathVariable("companyName") String companyName) {
+        CompletionStage<Option<Company>> foundCompany = companyService.findCompanyByCompanyNameContainsIgnoreCase(companyName);
         return ResponseEntity.ok(foundCompany);
     }
 
     @GetMapping("/api/company/{projectName}")
-    public ResponseEntity<Company> findCompanyByProjectNameContainsIgnoreCase(@PathVariable("projectName") String projectName) {
-        Company foundCompanies = companyService.findCompanyByProjectNameContainsIgnoreCase(projectName);
+    public ResponseEntity<CompletionStage<Option<Company>>> findCompanyByProjectNameContainsIgnoreCase(@PathVariable("projectName") String projectName) {
+        CompletionStage<Option<Company>> foundCompanies = companyService.findCompanyByProjectNameContainsIgnoreCase(projectName);
         return ResponseEntity.ok(foundCompanies);
     }
 
     @GetMapping("/api/company/{name}")
-    public ResponseEntity<List<Company>> findCompanyByContactPersonContainsIgnoreCase(@PathVariable("name") String name) {
-        List<Company> foundCompanies = companyService.findCompanyByContactPersonContainsIgnoreCase(name);
+    public ResponseEntity<CompletionStage<List<Company>>> findCompanyByContactPersonContainsIgnoreCase(@PathVariable("name") String name) {
+        CompletionStage<List<Company>> foundCompanies = companyService.findCompanyByContactPersonContainsIgnoreCase(name);
         return ResponseEntity.ok(foundCompanies);
     }
 }

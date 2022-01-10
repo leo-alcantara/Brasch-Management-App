@@ -1,5 +1,6 @@
-package the.bug.tech.brasch_management_system.controllers;
+package the.bug.tech.brasch_management_system.resource;
 
+import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import the.bug.tech.brasch_management_system.model.ContactPerson;
 import the.bug.tech.brasch_management_system.service.ContactPersonService;
 
 import java.util.List;
+import java.util.concurrent.CompletionStage;
 
 @RestController
 public class ContactPersonController {
@@ -55,20 +57,20 @@ public class ContactPersonController {
     }
 
     @GetMapping("/api/contact-person/{contactPersonName}")
-    public ResponseEntity<ContactPerson> findContactPersonByNameContainsIgnoreCase(@PathVariable("contactPersonName") String contactPersonName){
-        ContactPerson foundContactPerson= contactPersonService.findContactPersonByNameContainsIgnoreCase(contactPersonName);
+    public ResponseEntity<CompletionStage<Option<ContactPerson>>> findContactPersonByNameContainsIgnoreCase(@PathVariable("contactPersonName") String contactPersonName){
+        CompletionStage<Option<ContactPerson>> foundContactPerson= contactPersonService.findContactPersonByNameContainsIgnoreCase(contactPersonName);
         return ResponseEntity.ok(foundContactPerson);
     }
 
     @GetMapping("/api/contact-person/{companyName}")
-    public ResponseEntity<List<ContactPerson>> findContactPersonByCompanyContainsIgnoreCase(@PathVariable("companyName") String companyName){
-        List<ContactPerson> foundPeople= contactPersonService.findContactPersonByCompanyContainsIgnoreCase(companyName);
+    public ResponseEntity<CompletionStage<List<ContactPerson>>> findContactPersonByCompanyContainsIgnoreCase(@PathVariable("companyName") String companyName){
+        CompletionStage<List<ContactPerson>> foundPeople= contactPersonService.findContactPersonByCompanyContainsIgnoreCase(companyName);
         return ResponseEntity.ok(foundPeople);
     }
 
     @GetMapping("/api/contact-person/{projectName}")
-    public ResponseEntity<List<ContactPerson>> findContactPersonByProjectContainsIgnoreCase(@PathVariable("projectName") String projectName){
-        List<ContactPerson> foundPeople= contactPersonService.findContactPersonByProjectContainsIgnoreCase(projectName);
+    public ResponseEntity<CompletionStage<List<ContactPerson>>> findContactPersonByProjectContainsIgnoreCase(@PathVariable("projectName") String projectName){
+        CompletionStage<List<ContactPerson>> foundPeople= contactPersonService.findContactPersonByProjectContainsIgnoreCase(projectName);
         return ResponseEntity.ok(foundPeople);
     }
 

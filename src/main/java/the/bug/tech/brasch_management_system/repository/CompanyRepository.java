@@ -1,23 +1,26 @@
-package the.bug.tech.brasch_management_system.data.repository;
+package the.bug.tech.brasch_management_system.repository;
 
+import io.vavr.control.Option;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import the.bug.tech.brasch_management_system.model.Company;
 
 import java.util.List;
+import java.util.concurrent.CompletionStage;
 
+@Repository
 public interface CompanyRepository extends JpaRepository<Company, String> {
 
-
     @Query("SELECT c FROM Company c WHERE UPPER(c.companyName) LIKE UPPER(CONCAT('%', :companyName, '%'))")
-    Company findCompanyByCompanyNameContainsIgnoreCase(@Param("companyName") String companyName);
+    Option<Company> getCompanyByCompanyNameContainsIgnoreCase(@Param("companyName") String companyName);
 
     @Query("SELECT c FROM Company c JOIN FETCH c.projectsList AS p WHERE UPPER(p.projectName) LIKE UPPER(CONCAT('%', :projectName, '%'))")
-    Company findCompanyByProjectNameContainsIgnoreCase(@Param("projectName") String projectName);
+    Option<Company> getCompanyByProjectNameContainsIgnoreCase(@Param("projectName") String projectName);
 
     @Query("SELECT c FROM Company c JOIN FETCH c.contactPersonList AS cp WHERE " +
             "UPPER(CONCAT(cp.contactPersonPerson.firstName, cp.contactPersonPerson.lastName))  LIKE UPPER(CONCAT('%', :name, '%') )")
-    List<Company> findCompanyByContactPersonContainsIgnoreCase(@Param("name") String name);
+    List<Company> getCompanyByContactPersonContainsIgnoreCase(@Param("contactPersonName") String contactPersonName);
 
 }

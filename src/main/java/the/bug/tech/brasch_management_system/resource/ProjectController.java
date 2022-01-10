@@ -1,5 +1,6 @@
-package the.bug.tech.brasch_management_system.controllers;
+package the.bug.tech.brasch_management_system.resource;
 
+import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import the.bug.tech.brasch_management_system.model.Project;
 import the.bug.tech.brasch_management_system.service.ProjectService;
 
 import java.util.List;
+import java.util.concurrent.CompletionStage;
 
 @RestController
 public class ProjectController {
@@ -56,32 +58,32 @@ public class ProjectController {
     }
 
     @GetMapping("/api/projects/{projectName}")
-    public ResponseEntity<Project> findProjectByNameContainsIgnoreCase(@PathVariable("projectName") String projectName){
-        Project foundProject = projectService.findProjectByNameContainsIgnoreCase(projectName);
+    public ResponseEntity<CompletionStage<Option<Project>>> findProjectByNameContainsIgnoreCase(@PathVariable("projectName") String projectName){
+        CompletionStage<Option<Project>> foundProject = projectService.getProjectByNameContainsIgnoreCase(projectName);
         return ResponseEntity.ok(foundProject);
     }
 
     @GetMapping("/api/projects/{projectAddress}")
-    public ResponseEntity<Project> findProjectByAddressContainsIgnoreCase(@PathVariable("projectAddress") String projectAddress){
-        Project projectFound= projectService.findProjectByAddressContainsIgnoreCase(projectAddress);
+    public ResponseEntity<CompletionStage<Option<Project>>> findProjectByAddressContainsIgnoreCase(@PathVariable("projectAddress") String projectAddress){
+        CompletionStage<Option<Project>> projectFound= projectService.getProjectByAddressContainsIgnoreCase(projectAddress);
         return ResponseEntity.ok(projectFound);
     }
 
     @GetMapping("/api/projects/{companyName}")
-    public ResponseEntity<List<Project>> findProjectByCompanyContainsIgnoreCase(@PathVariable("companyName") String companyName){
-        List<Project> foundProjects= projectService.findProjectByCompanyContainsIgnoreCase(companyName);
+    public ResponseEntity<CompletionStage<List<Project>>> findProjectByCompanyContainsIgnoreCase(@PathVariable("companyName") String companyName){
+        CompletionStage<List<Project>> foundProjects= projectService.getProjectByCompanyContainsIgnoreCase(companyName);
         return ResponseEntity.ok(foundProjects);
     }
 
     @GetMapping("/api/projects/{projectManagerName}")
-    public ResponseEntity<List<Project>> findProjectByProjectManagerContainsIgnoreCase(@PathVariable("projectManagerName") String name){
-        List<Project> foundProjects= projectService.findProjectByProjectManagerContainsIgnoreCase(name);
+    public ResponseEntity<CompletionStage<List<Project>>> findProjectByProjectManagerContainsIgnoreCase(@PathVariable("projectManagerName") String name){
+        CompletionStage<List<Project>> foundProjects= projectService.getProjectByProjectManagerContainsIgnoreCase(name);
         return ResponseEntity.ok(foundProjects);
     }
 
     @GetMapping("/api/projects/{contactPersonName}")
-    public ResponseEntity<List<Project>> findProjectByContactPersonContainsIgnoreCase(@PathVariable("contactPersonName") String name){
-        List<Project> foundProjects= projectService.findProjectByContactPersonContainsIgnoreCase(name);
+    public ResponseEntity<CompletionStage<List<Project>>> findProjectByContactPersonContainsIgnoreCase(@PathVariable("contactPersonName") String name){
+        CompletionStage<List<Project>> foundProjects= projectService.getProjectByContactPersonContainsIgnoreCase(name);
         return ResponseEntity.ok(foundProjects);
     }
 

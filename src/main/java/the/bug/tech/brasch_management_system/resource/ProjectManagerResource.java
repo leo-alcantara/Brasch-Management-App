@@ -6,36 +6,36 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import the.bug.tech.brasch_management_system.model.ProjectManager;
-import the.bug.tech.brasch_management_system.service.ProjectManagerService;
+import the.bug.tech.brasch_management_system.service.ProjectManagerServiceImpl;
 
 import java.util.List;
 import java.util.concurrent.CompletionStage;
 
 @RestController
-public class ProjectManagerController {
+public class ProjectManagerResource {
 
-    private final ProjectManagerService projectManagerService;
+    private final ProjectManagerServiceImpl projectManagerServiceImpl;
 
     @Autowired
-    public ProjectManagerController(ProjectManagerService projectManagerService) {
-        this.projectManagerService = projectManagerService;
+    public ProjectManagerResource(ProjectManagerServiceImpl projectManagerServiceImpl) {
+        this.projectManagerServiceImpl = projectManagerServiceImpl;
     }
     
     @PostMapping("/api/project-manager")
     public ResponseEntity<ProjectManager> create(@RequestParam ProjectManager projectManager){
-        ProjectManager saved= projectManagerService.createProjectManager(projectManager);
+        ProjectManager saved= projectManagerServiceImpl.insertProjectManager(projectManager);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @GetMapping("/api/project-manager/{id}")
     public ResponseEntity<ProjectManager> findById(@PathVariable("id") String projectManagerId){
-        ProjectManager foundById = projectManagerService.findById(projectManagerId);
+        ProjectManager foundById = projectManagerServiceImpl.getProjectManagerById(projectManagerId);
         return ResponseEntity.ok(foundById);
     }
 
     @GetMapping("/api/project-manager")
     public ResponseEntity<List<ProjectManager>> findAll(){
-        List<ProjectManager> allFound = projectManagerService.findAll();
+        List<ProjectManager> allFound = projectManagerServiceImpl.getAllProjectManager();
         return ResponseEntity.ok(allFound);
     }
 
@@ -43,7 +43,7 @@ public class ProjectManagerController {
     public ResponseEntity<ProjectManager> update(@PathVariable("id") String projectManagerId,
                                                  @RequestBody ProjectManager projectManager){
         if(projectManagerId.equals(projectManager.getProjectManagerId())){
-            ProjectManager updated= projectManagerService.update(projectManager);
+            ProjectManager updated= projectManagerServiceImpl.updateProjectManager(projectManager);
             return ResponseEntity.ok().body(updated);
         }else {
             return ResponseEntity.badRequest().build();
@@ -52,20 +52,20 @@ public class ProjectManagerController {
 
     @DeleteMapping("/api/project-manager/{id}")
     public ResponseEntity<ProjectManager> delete(@PathVariable("id") String projectManagerId){
-        projectManagerService.delete(projectManagerId);
+        projectManagerServiceImpl.deleteProjectManager(projectManagerId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/api/project-manager/{projectManagerName}")
     public ResponseEntity<CompletionStage<Option<ProjectManager>>> findProjectManagerByNameContainsIgnoreCase(@PathVariable("projectManagerName") String projectManagerName){
-        CompletionStage<Option<ProjectManager>> found= projectManagerService.findProjectManagerByNameContainsIgnoreCase(projectManagerName);
+        CompletionStage<Option<ProjectManager>> found= projectManagerServiceImpl.getProjectManagerByNameContainsIgnoreCase(projectManagerName);
         return ResponseEntity.ok(found);
     }
 
 
     @GetMapping("/api/project-manager/{projectName}")
     public ResponseEntity<CompletionStage<Option<ProjectManager>>> findProjectManagerByProjectContainsIgnoreCase(@PathVariable("projectName") String projectName){
-         CompletionStage<Option<ProjectManager>> found= projectManagerService.findProjectManagerByProjectContainsIgnoreCase(projectName);
+         CompletionStage<Option<ProjectManager>> found= projectManagerServiceImpl.getProjectManagerByProjectContainsIgnoreCase(projectName);
          return ResponseEntity.ok(found);
     }
 

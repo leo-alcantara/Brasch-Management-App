@@ -1,73 +1,26 @@
 package the.bug.tech.brasch_management_system.service;
 
 import io.vavr.control.Option;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import the.bug.tech.brasch_management_system.repository.CompanyRepository;
 import the.bug.tech.brasch_management_system.model.Company;
-import the.bug.tech.brasch_management_system.repository.CompanyRepositoryAsync;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 
-@Service
-public class CompanyService {
+public interface CompanyService {
 
-    private final CompanyRepository companyRepository;
-    private final CompanyRepositoryAsync companyRepositoryAsync;
+    CompletionStage<Company> insertCompany(Company company);
 
-    @Autowired
-    public CompanyService(CompanyRepository companyRepository, CompanyRepositoryAsync companyRepositoryAsync) {
-        this.companyRepository = companyRepository;
-        this.companyRepositoryAsync = companyRepositoryAsync;
-    }
+    CompletionStage<Company> getCompanyById(String companyId);
 
-    @Async
-    public Company createCompany(Company company) {
-        return companyRepository.save(company);
-    }
+    CompletionStage<List<Company>> getAllCompanies();
 
-    @Async
-    public Company findById(String companyId) {
-        Optional<Company> foundById = companyRepository.findById(companyId);
-        return foundById.orElseThrow(IllegalArgumentException::new);
-    }
+    CompletionStage<Company> updateCompany(Company company);
 
-    @Async
-    public List<Company> findAll() {
-        return companyRepository.findAll();
-    }
+    CompletionStage<Option<Void>> deleteCompany(Company company);
 
-    @Async
-    @Transactional
-    public Company update(Company company){
-        Company original=companyRepository.findById(company.getCompanyId()).get();
-        original.setCompanyName(company.getCompanyName());
-        original.setCompanyAddress(company.getCompanyAddress());
-        original.setCompanyPhoneNumber(company.getCompanyPhoneNumber());
-        original.setProjectsList(company.getProjectsList());
-        original.setContactPersonList(company.getContactPersonList());
+    CompletionStage<Option<Company>> getCompanyByCompanyNameContainsIgnoreCase(String companyName);
 
-        return original;
-    }
+    CompletionStage<Option<Company>> getCompanyByProjectNameContainsIgnoreCase(String projectName);
 
-    @Async
-    public void delete(String companyId){
-        companyRepository.deleteById(companyId);
-    }
-
-    public CompletionStage<Option<Company>> findCompanyByCompanyNameContainsIgnoreCase(String companyName) {
-        return companyRepositoryAsync.getCompanyByCompanyNameContainsIgnoreCase(companyName);
-    }
-
-    public CompletionStage<Option<Company>> findCompanyByProjectNameContainsIgnoreCase(String projectName) {
-        return companyRepositoryAsync.getCompanyByProjectNameContainsIgnoreCase(projectName);
-    }
-
-    public CompletionStage<List<Company>> findCompanyByContactPersonContainsIgnoreCase(String name){
-       return companyRepositoryAsync.getCompanyByContactPersonContainsIgnoreCase(name);
-    }
+    CompletionStage<Option<Company>> getCompanyByContactPersonContainsIgnoreCase(String name);
 }

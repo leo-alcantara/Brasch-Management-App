@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import the.bug.tech.brasch_management_system.model.ContactPerson;
 
 import java.util.List;
-import java.util.concurrent.CompletionStage;
 
 @Repository
 public interface ContactPersonRepository extends JpaRepository<ContactPerson, String> {
+
 
     @Query("SELECT cp FROM ContactPerson cp JOIN FETCH cp.contactPersonPerson AS p WHERE UPPER(CONCAT(p.firstName, p.lastName)) LIKE UPPER(CONCAT('%', :contactPersonName, '%') )")
     Option<ContactPerson> getContactPersonByNameContainsIgnoreCase(@Param("contactPersonName") String contactPersonName);

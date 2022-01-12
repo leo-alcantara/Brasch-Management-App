@@ -7,9 +7,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import the.bug.tech.brasch_management_system.model.Company;
 
-import java.util.List;
-import java.util.concurrent.CompletionStage;
-
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, String> {
 
@@ -21,6 +18,6 @@ public interface CompanyRepository extends JpaRepository<Company, String> {
 
     @Query("SELECT c FROM Company c JOIN FETCH c.contactPersonList AS cp WHERE " +
             "UPPER(CONCAT(cp.contactPersonPerson.firstName, cp.contactPersonPerson.lastName))  LIKE UPPER(CONCAT('%', :name, '%') )")
-    List<Company> getCompanyByContactPersonContainsIgnoreCase(@Param("contactPersonName") String contactPersonName);
+    Option<Company> getCompanyByContactPersonContainsIgnoreCase(@Param("contactPersonName") String contactPersonName);
 
 }

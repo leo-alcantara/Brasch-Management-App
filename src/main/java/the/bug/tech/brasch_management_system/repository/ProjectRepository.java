@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 import the.bug.tech.brasch_management_system.model.Project;
 
 import java.util.List;
-import java.util.concurrent.CompletionStage;
 
 public interface ProjectRepository extends JpaRepository<Project, String> {
 

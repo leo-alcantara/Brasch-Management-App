@@ -1,74 +1,123 @@
 package the.bug.tech.brasch_management_system.resource;
 
+import io.swagger.annotations.ApiOperation;
 import io.vavr.control.Option;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import the.bug.tech.brasch_management_system.model.ProjectManager;
+import the.bug.tech.brasch_management_system.dto.Result;
+import the.bug.tech.brasch_management_system.model.dto.ProjectManagerDto;
+import the.bug.tech.brasch_management_system.service.EntityDtoMapper;
 import the.bug.tech.brasch_management_system.service.ProjectManagerServiceImpl;
+import the.bug.tech.brasch_management_system.util.Responses;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletionStage;
+import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/v1/projectManager")
 public class ProjectManagerResource {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProjectManagerResource.class);
+
     private final ProjectManagerServiceImpl projectManagerServiceImpl;
+    private final EntityDtoMapper converter;
 
     @Autowired
-    public ProjectManagerResource(ProjectManagerServiceImpl projectManagerServiceImpl) {
+    public ProjectManagerResource(ProjectManagerServiceImpl projectManagerServiceImpl, EntityDtoMapper converter) {
         this.projectManagerServiceImpl = projectManagerServiceImpl;
-    }
-    
-    @PostMapping("/api/project-manager")
-    public ResponseEntity<ProjectManager> create(@RequestParam ProjectManager projectManager){
-        ProjectManager saved= projectManagerServiceImpl.insertProjectManager(projectManager);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        this.converter = converter;
     }
 
-    @GetMapping("/api/project-manager/{id}")
-    public ResponseEntity<ProjectManager> findById(@PathVariable("id") String projectManagerId){
-        ProjectManager foundById = projectManagerServiceImpl.getProjectManagerById(projectManagerId);
-        return ResponseEntity.ok(foundById);
+    @RequestMapping(produces = "application/json", value = "/create", method = RequestMethod.POST)
+    @ApiOperation(value = "Inserts project manager", response = ProjectManagerDto.class)
+    public CompletionStage<ResponseEntity<Result<String>>> create(@RequestParam ProjectManagerDto projectManagerDto) {
+        return projectManagerServiceImpl.insertProjectManager(converter.toProjectManager(projectManagerDto))
+                .thenApply(projectManager -> Responses.ok(""))
+                .exceptionally(throwable -> {
+                    logger.error("Failed to insert project manager = {}", projectManagerDto, throwable);
+                    return Responses.internalServerError();
+                });
     }
 
-    @GetMapping("/api/project-manager")
-    public ResponseEntity<List<ProjectManager>> findAll(){
-        List<ProjectManager> allFound = projectManagerServiceImpl.getAllProjectManager();
-        return ResponseEntity.ok(allFound);
+    @RequestMapping(produces = "application/json", value = "/projectManagerId", method = RequestMethod.POST)
+    @ApiOperation(value = "Gets project manager instance by id", response = ProjectManagerDto.class)
+    public CompletionStage<ResponseEntity<Result<ProjectManagerDto>>> getProjectManagerById(@RequestParam Optional<String> projectManagerIdOpt) {
+        return projectManagerServiceImpl.getProjectManagerById(projectManagerIdOpt.get())
+                .thenApply(projectManager -> {
+                    ProjectManagerDto projectManagerDto = converter.toProjectManagerDto(projectManager);
+                    return Responses.ok(projectManagerDto);
+                }).exceptionally(throwable -> {
+                    logger.error("Failed to get project manager = {}", projectManagerIdOpt, throwable);
+                    return Responses.internalServerError();
+                });
     }
 
-    @PutMapping("/api/project-manager/{id}")
-    public ResponseEntity<ProjectManager> update(@PathVariable("id") String projectManagerId,
-                                                 @RequestBody ProjectManager projectManager){
-        if(projectManagerId.equals(projectManager.getProjectManagerId())){
-            ProjectManager updated= projectManagerServiceImpl.updateProjectManager(projectManager);
-            return ResponseEntity.ok().body(updated);
-        }else {
-            return ResponseEntity.badRequest().build();
-        }
+    @RequestMapping(produces = "application/json", value = "/projectManagerId", method = RequestMethod.POST)
+    @ApiOperation(value = "Gets all project managers instances", response = ProjectManagerDto.class)
+    public CompletionStage<ResponseEntity<Result<List<ProjectManagerDto>>>> getAllProjectManagers() {
+        return projectManagerServiceImpl.getAllProjectManager()
+                .thenApply(projectManagers -> {
+                    List<ProjectManagerDto> projectManagerDtoList = projectManagers
+                            .stream()
+                            .map(converter::toProjectManagerDto)
+                            .collect(Collectors.toList());
+                    return Responses.ok(projectManagerDtoList);
+                }).exceptionally(throwable -> {
+                    logger.error("Failed to get project managers = {}", throwable);
+                    return Responses.internalServerError();
+                });
     }
 
-    @DeleteMapping("/api/project-manager/{id}")
-    public ResponseEntity<ProjectManager> delete(@PathVariable("id") String projectManagerId){
-        projectManagerServiceImpl.deleteProjectManager(projectManagerId);
-        return ResponseEntity.ok().build();
+    @RequestMapping(produces = "application/json", value = "/update", method = RequestMethod.PUT)
+    @ApiOperation(value = "Updates project manager instance", response = ProjectManagerDto.class)
+    public CompletionStage<ResponseEntity<Result<String>>> updateProjectManager(@RequestParam ProjectManagerDto projectManagerDto) {
+        return projectManagerServiceImpl.updateProjectManager(converter.toProjectManager(projectManagerDto))
+                .thenApply(projectManager -> Responses.ok(""))
+                .exceptionally(throwable -> {
+                    logger.error("Failed to update project manager = {}", projectManagerDto, throwable);
+                    return Responses.internalServerError();
+                });
     }
 
-    @GetMapping("/api/project-manager/{projectManagerName}")
-    public ResponseEntity<CompletionStage<Option<ProjectManager>>> findProjectManagerByNameContainsIgnoreCase(@PathVariable("projectManagerName") String projectManagerName){
-        CompletionStage<Option<ProjectManager>> found= projectManagerServiceImpl.getProjectManagerByNameContainsIgnoreCase(projectManagerName);
-        return ResponseEntity.ok(found);
+    @RequestMapping(produces = "application/json", value = "/delete", method = RequestMethod.DELETE)
+    @ApiOperation(value = "Deletes project manager instance", response = ProjectManagerDto.class)
+    public CompletionStage<ResponseEntity<Result<Option<Void>>>> deleteProjectManager(@RequestBody ProjectManagerDto projectManagerDto) {
+        return projectManagerServiceImpl.deleteProjectManager(converter.toProjectManager(projectManagerDto))
+                .thenApply(Responses::ok)
+                .exceptionally(throwable -> {
+                    logger.error("Failed to delete project manager = {}", projectManagerDto, throwable);
+                    return Responses.internalServerError();
+                });
     }
 
-
-    @GetMapping("/api/project-manager/{projectName}")
-    public ResponseEntity<CompletionStage<Option<ProjectManager>>> findProjectManagerByProjectContainsIgnoreCase(@PathVariable("projectName") String projectName){
-         CompletionStage<Option<ProjectManager>> found= projectManagerServiceImpl.getProjectManagerByProjectContainsIgnoreCase(projectName);
-         return ResponseEntity.ok(found);
+    @RequestMapping(produces = "application/json", value = "getByName", method = RequestMethod.GET)
+    @ApiOperation(value = "Gets project manager instance by name", response = ProjectManagerDto.class)
+    public CompletionStage<ResponseEntity<Result<ProjectManagerDto>>> getProjectManagerByNameContainsIgnoreCase(@RequestParam String projectManagerName) {
+        return projectManagerServiceImpl.getProjectManagerByNameContainsIgnoreCase(projectManagerName)
+                .thenApply(projectManager -> {
+                    ProjectManagerDto projectManagerDto = converter.toProjectManagerDto(projectManager.get());
+                    return Responses.ok(projectManagerDto);
+                }).exceptionally(throwable -> {
+                    logger.error("Failed to ge project manager = {}", projectManagerName, throwable);
+                    return Responses.internalServerError();
+                });
     }
 
-
-
+    @RequestMapping(produces = "applicatin/json", value = "getByProject", method = RequestMethod.GET)
+    @ApiOperation(value = "Gets project manager instance by project", response = ProjectManagerDto.class)
+    public CompletionStage<ResponseEntity<Result<ProjectManagerDto>>> getProjectManagerByProjectContainsIgnoreCase(@RequestParam String projectName) {
+        return projectManagerServiceImpl.getProjectManagerByProjectContainsIgnoreCase(projectName)
+                .thenApply(projectManager -> {
+                    ProjectManagerDto projectManagerDto = converter.toProjectManagerDto(projectManager.get());
+                    return Responses.ok(projectManagerDto);
+                }).exceptionally(throwable -> {
+                    logger.error("Failed to get project manager = {}", projectName, throwable);
+                    return Responses.internalServerError();
+                });
+    }
 }

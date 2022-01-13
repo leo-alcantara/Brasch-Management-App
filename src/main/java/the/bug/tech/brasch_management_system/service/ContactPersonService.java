@@ -1,7 +1,6 @@
 package the.bug.tech.brasch_management_system.service;
 
 import io.vavr.control.Option;
-import org.springframework.transaction.annotation.Transactional;
 import the.bug.tech.brasch_management_system.model.ContactPerson;
 
 import java.util.List;

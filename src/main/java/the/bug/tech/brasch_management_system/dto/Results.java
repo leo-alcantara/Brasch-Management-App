@@ -1,7 +1,5 @@
 package the.bug.tech.brasch_management_system.dto;
 
-import io.vavr.control.Try;
-
 public class Results {
 
     public static <T> Failure<T> internalServerError() {

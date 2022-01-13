@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import the.bug.tech.brasch_management_system.dto.Result;
-import the.bug.tech.brasch_management_system.model.Project;
 import the.bug.tech.brasch_management_system.model.dto.ProjectDto;
 import the.bug.tech.brasch_management_system.service.EntityDtoMapper;
 import the.bug.tech.brasch_management_system.service.ProjectServiceImpl;
@@ -34,9 +33,8 @@ public class ProjectResource {
         this.converter = converter;
     }
 
-
     @RequestMapping(produces = "application/json", value = "/create", method = RequestMethod.POST)
-    @ApiOperation(value = "Persists project instances", response = ProjectDto.class)
+    @ApiOperation(value = "Persists project instance", response = ProjectDto.class)
     public CompletionStage<ResponseEntity<Result<String>>> insertProject(@RequestBody ProjectDto projectdto) {
         return projectServiceImpl.insertProject(converter.toProject(projectdto))
                 .thenApply(project -> Responses.ok(""))
@@ -46,21 +44,21 @@ public class ProjectResource {
                 });
     }
 
-
     @RequestMapping(produces = "application/json", value = "/projectId", method = RequestMethod.GET)
-    @ApiOperation(value = "Gets project instances", response = ProjectDto.class)
+    @ApiOperation(value = "Gets project instance by id", response = ProjectDto.class)
     public CompletionStage<ResponseEntity<Result<ProjectDto>>> getProjectById(@RequestParam Optional<String> projectIdOpt) {
 
-      return projectServiceImpl.getProjectById(projectIdOpt.get()).thenApply(project -> {ProjectDto projectDto = converter.toProjectDto(project);
-      return Responses.ok(projectDto);
-      }).exceptionally(throwable -> {
-          logger.error("Failed to get project = {}", projectIdOpt, throwable);
-          return Responses.internalServerError();
-      });
+        return projectServiceImpl.getProjectById(projectIdOpt.get()).thenApply(project -> {
+            ProjectDto projectDto = converter.toProjectDto(project);
+            return Responses.ok(projectDto);
+        }).exceptionally(throwable -> {
+            logger.error("Failed to get project = {}", projectIdOpt, throwable);
+            return Responses.internalServerError();
+        });
     }
 
     @RequestMapping(produces = "application/json", value = "/findAll", method = RequestMethod.GET)
-    @ApiOperation(value = "Gets project instances", response = ProjectDto.class)
+    @ApiOperation(value = "Gets all project instances", response = ProjectDto.class)
     public CompletionStage<ResponseEntity<Result<List<ProjectDto>>>> getAllProjects() {
         return projectServiceImpl.getAllProject().thenApply(projects -> {
             List<ProjectDto> projectDtoList = projects.stream()
@@ -73,9 +71,8 @@ public class ProjectResource {
         });
     }
 
-
     @RequestMapping(produces = "application/json", value = "/update", method = RequestMethod.PUT)
-    @ApiOperation(value = "Updates project instances", response = ProjectDto.class)
+    @ApiOperation(value = "Updates project instance", response = ProjectDto.class)
     public CompletionStage<ResponseEntity<Result<String>>> updateProject(@RequestBody ProjectDto projectDto) {
         return projectServiceImpl.updateProject(converter.toProject(projectDto))
                 .thenApply(project -> Responses.ok(""))
@@ -86,7 +83,7 @@ public class ProjectResource {
     }
 
     @RequestMapping(produces = "application/json", value = "/delete", method = RequestMethod.DELETE)
-    @ApiOperation(value = "Deletes project instances", response = ProjectDto.class)
+    @ApiOperation(value = "Deletes project instance", response = ProjectDto.class)
     public CompletionStage<ResponseEntity<Result<Option<Void>>>> deleteProject(@RequestBody ProjectDto projectDto) {
         return projectServiceImpl.deleteProject(converter.toProject(projectDto))
                 .thenApply(Responses::ok)
@@ -97,22 +94,22 @@ public class ProjectResource {
     }
 
     @RequestMapping(produces = "application/json", value = "/getByName", method = RequestMethod.GET)
-    @ApiOperation(value = "Gets project instances", response = ProjectDto.class)
-    public CompletionStage<ResponseEntity<Result<ProjectDto>>> getProjectByNameContainsIgnoreCase(@RequestParam String projectName){
+    @ApiOperation(value = "Gets project instance by name", response = ProjectDto.class)
+    public CompletionStage<ResponseEntity<Result<ProjectDto>>> getProjectByNameContainsIgnoreCase(@RequestParam String projectName) {
 
         return projectServiceImpl.getProjectByNameContainsIgnoreCase(projectName)
                 .thenApply(project -> {
-            ProjectDto projectDto = converter.toProjectDto(project.get());
-            return Responses.ok(projectDto);
-        }).exceptionally(throwable -> {
-            logger.error("Failed to get project = {}", projectName, throwable);
-            return Responses.internalServerError();
-        });
+                    ProjectDto projectDto = converter.toProjectDto(project.get());
+                    return Responses.ok(projectDto);
+                }).exceptionally(throwable -> {
+                    logger.error("Failed to get project = {}", projectName, throwable);
+                    return Responses.internalServerError();
+                });
     }
 
     @RequestMapping(produces = "application/json", value = "/getByAddress", method = RequestMethod.GET)
-    @ApiOperation(value = "Gets project instances", response = ProjectDto.class)
-    public CompletionStage<ResponseEntity<Result<ProjectDto>>> getProjectByAddressContainsIgnoreCase(@RequestParam String projectAddress){
+    @ApiOperation(value = "Gets project instance by address", response = ProjectDto.class)
+    public CompletionStage<ResponseEntity<Result<ProjectDto>>> getProjectByAddressContainsIgnoreCase(@RequestParam String projectAddress) {
         return projectServiceImpl.getProjectByAddressContainsIgnoreCase(projectAddress)
                 .thenApply(project -> {
                     ProjectDto projectDto = converter.toProjectDto(project.get());
@@ -124,8 +121,8 @@ public class ProjectResource {
     }
 
     @RequestMapping(produces = "application/json", value = "/getByCompany", method = RequestMethod.GET)
-    @ApiOperation(value = "Gets project instances", response = ProjectDto.class)
-    public CompletionStage<ResponseEntity<Result<List<ProjectDto>>>> getProjectByCompanyContainsIgnoreCase(@RequestParam String companyName){
+    @ApiOperation(value = "Gets project instance by company", response = ProjectDto.class)
+    public CompletionStage<ResponseEntity<Result<List<ProjectDto>>>> getProjectByCompanyContainsIgnoreCase(@RequestParam String companyName) {
         return projectServiceImpl.getProjectByCompanyContainsIgnoreCase(companyName)
                 .thenApply(projects -> {
                     List<ProjectDto> projectDtoList = projects.stream()
@@ -139,8 +136,8 @@ public class ProjectResource {
     }
 
     @RequestMapping(produces = "application/json", value = "/getByProjectManager", method = RequestMethod.GET)
-    @ApiOperation(value = "Gets project instances", response = ProjectDto.class)
-    public CompletionStage<ResponseEntity<Result<List<ProjectDto>>>> getProjectByProjectManagerContainsIgnoreCase(@RequestParam String projectManagerName){
+    @ApiOperation(value = "Gets project instance by project manager", response = ProjectDto.class)
+    public CompletionStage<ResponseEntity<Result<List<ProjectDto>>>> getProjectByProjectManagerContainsIgnoreCase(@RequestParam String projectManagerName) {
         return projectServiceImpl.getProjectByProjectManagerContainsIgnoreCase(projectManagerName)
                 .thenApply(projects -> {
                     List<ProjectDto> projectDtoList = projects.stream()
@@ -154,8 +151,8 @@ public class ProjectResource {
     }
 
     @RequestMapping(produces = "application/json", value = "/getByContactPerson", method = RequestMethod.GET)
-    @ApiOperation(value = "Gets project instances", response = ProjectDto.class)
-    public CompletionStage<ResponseEntity<Result<List<ProjectDto>>>> getProjectByContactPersonContainsIgnoreCase(@RequestParam String contactPersonName){
+    @ApiOperation(value = "Gets project instance by contact person", response = ProjectDto.class)
+    public CompletionStage<ResponseEntity<Result<List<ProjectDto>>>> getProjectByContactPersonContainsIgnoreCase(@RequestParam String contactPersonName) {
         return projectServiceImpl.getProjectByContactPersonContainsIgnoreCase(contactPersonName)
                 .thenApply(projects -> {
                     List<ProjectDto> projectDtoList = projects.stream()
@@ -167,17 +164,4 @@ public class ProjectResource {
                     return Responses.internalServerError();
                 });
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

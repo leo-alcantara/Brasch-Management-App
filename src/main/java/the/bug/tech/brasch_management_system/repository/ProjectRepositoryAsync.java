@@ -11,7 +11,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
 
-
 @Repository
 public class ProjectRepositoryAsync {
 
@@ -26,7 +25,7 @@ public class ProjectRepositoryAsync {
         this.entityManager = entityManager;
     }
 
-    public CompletionStage<Project> insertProject (Project project) {
+    public CompletionStage<Project> insertProject(Project project) {
         return CompletableFuture.supplyAsync(() -> projectRepository.save(project), executor);
     }
 
@@ -42,31 +41,30 @@ public class ProjectRepositoryAsync {
         return CompletableFuture.supplyAsync(() -> {
             projectRepository.delete(project);
             return null;
-            }, executor);
+        }, executor);
     }
 
     public CompletionStage<Project> updateProject(Project project) {
         return CompletableFuture.supplyAsync(() -> entityManager.merge(project), executor);
     }
 
-    public CompletionStage<Option<Project>> getProjectByNameContainsIgnoreCase (String projectName) {
+    public CompletionStage<Option<Project>> getProjectByNameContainsIgnoreCase(String projectName) {
         return CompletableFuture.supplyAsync(() -> projectRepository.getProjectByNameContainsIgnoreCase(projectName), executor);
     }
 
-    public CompletionStage<Option<Project>> getProjectByAddressContainsIgnoreCase (String projectAddress) {
+    public CompletionStage<Option<Project>> getProjectByAddressContainsIgnoreCase(String projectAddress) {
         return CompletableFuture.supplyAsync(() -> projectRepository.getProjectByAddressContainsIgnoreCase(projectAddress), executor);
     }
 
-    public CompletionStage<List<Project>> getProjectByCompanyContainsIgnoreCase (String companyName) {
+    public CompletionStage<List<Project>> getProjectByCompanyContainsIgnoreCase(String companyName) {
         return CompletableFuture.supplyAsync(() -> projectRepository.getProjectByCompanyContainsIgnoreCase(companyName), executor);
     }
 
-    public CompletionStage<List<Project>> getProjectByProjectManagerContainsIgnoreCase (String projectManagerName) {
+    public CompletionStage<List<Project>> getProjectByProjectManagerContainsIgnoreCase(String projectManagerName) {
         return CompletableFuture.supplyAsync(() -> projectRepository.getProjectByProjectManagerContainsIgnoreCase(projectManagerName), executor);
     }
 
-    public CompletionStage<List<Project>> getProjectByContactPersonContainsIgnoreCase (String contactPersonName) {
+    public CompletionStage<List<Project>> getProjectByContactPersonContainsIgnoreCase(String contactPersonName) {
         return CompletableFuture.supplyAsync(() -> projectRepository.getProjectByContactPersonContainsIgnoreCase(contactPersonName), executor);
     }
-
 }

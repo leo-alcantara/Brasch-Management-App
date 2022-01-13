@@ -12,7 +12,6 @@ import java.util.List;
 @Repository
 public interface ContactPersonRepository extends JpaRepository<ContactPerson, String> {
 
-
     @Query("SELECT cp FROM ContactPerson cp JOIN FETCH cp.contactPersonPerson AS p WHERE UPPER(CONCAT(p.firstName, p.lastName)) LIKE UPPER(CONCAT('%', :contactPersonName, '%') )")
     Option<ContactPerson> getContactPersonByNameContainsIgnoreCase(@Param("contactPersonName") String contactPersonName);
 

@@ -23,7 +23,7 @@ public class EntityDtoMapper {
                 company.getProjectsList());
     }
 
-    public ContactPerson toContactPerson(ContactPersonDto contactPersonDto){
+    public ContactPerson toContactPerson(ContactPersonDto contactPersonDto) {
         return new ContactPerson(contactPersonDto.getContactPersonPerson(),
                 contactPersonDto.getCompany(),
                 contactPersonDto.getProjectList());
@@ -82,6 +82,4 @@ public class EntityDtoMapper {
         return new ProjectManagerDto(projectManager.getProjectManagerPerson(),
                 projectManager.getProjectList());
     }
-
-
 }

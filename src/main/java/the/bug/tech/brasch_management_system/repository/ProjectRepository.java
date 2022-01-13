@@ -4,10 +4,12 @@ import io.vavr.control.Option;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import the.bug.tech.brasch_management_system.model.Project;
 
 import java.util.List;
 
+@Repository
 public interface ProjectRepository extends JpaRepository<Project, String> {
 
     @Query("SELECT p FROM Project p WHERE UPPER(p.projectName) LIKE UPPER(CONCAT('%', :projectName, '%'))")

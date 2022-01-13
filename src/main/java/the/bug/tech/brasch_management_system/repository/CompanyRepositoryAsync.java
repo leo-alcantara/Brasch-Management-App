@@ -3,7 +3,6 @@ package the.bug.tech.brasch_management_system.repository;
 import io.vavr.control.Option;
 import org.springframework.stereotype.Repository;
 import the.bug.tech.brasch_management_system.model.Company;
-import the.bug.tech.brasch_management_system.model.Project;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,7 +25,7 @@ public class CompanyRepositoryAsync {
         this.entityManager = entityManager;
     }
 
-    public CompletionStage<Company> insertCompany (Company company) {
+    public CompletionStage<Company> insertCompany(Company company) {
         return CompletableFuture.supplyAsync(() -> companyRepository.save(company), executor);
     }
 
@@ -49,29 +48,15 @@ public class CompanyRepositoryAsync {
         return CompletableFuture.supplyAsync(() -> entityManager.merge(company), executor);
     }
 
-    public CompletionStage<Option<Company>> getCompanyByCompanyNameContainsIgnoreCase (String companyName){
+    public CompletionStage<Option<Company>> getCompanyByCompanyNameContainsIgnoreCase(String companyName) {
         return CompletableFuture.supplyAsync(() -> companyRepository.getCompanyByCompanyNameContainsIgnoreCase(companyName), executor);
     }
 
-    public CompletionStage<Option<Company>> getCompanyByProjectNameContainsIgnoreCase(String projectName){
+    public CompletionStage<Option<Company>> getCompanyByProjectNameContainsIgnoreCase(String projectName) {
         return CompletableFuture.supplyAsync(() -> companyRepository.getCompanyByProjectNameContainsIgnoreCase(projectName), executor);
     }
 
-    public CompletionStage<Option<Company>> getCompanyByContactPersonContainsIgnoreCase (String contactPersonName){
+    public CompletionStage<Option<Company>> getCompanyByContactPersonContainsIgnoreCase(String contactPersonName) {
         return CompletableFuture.supplyAsync(() -> companyRepository.getCompanyByContactPersonContainsIgnoreCase(contactPersonName), executor);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

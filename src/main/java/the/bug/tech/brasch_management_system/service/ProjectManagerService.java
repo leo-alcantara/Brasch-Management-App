@@ -1,25 +1,22 @@
 package the.bug.tech.brasch_management_system.service;
 
 import io.vavr.control.Option;
-import org.springframework.transaction.annotation.Transactional;
 import the.bug.tech.brasch_management_system.model.ProjectManager;
 
 import java.util.List;
 import java.util.concurrent.CompletionStage;
 
 public interface ProjectManagerService {
-    @Transactional
-    ProjectManager insertProjectManager(ProjectManager projectManager);
 
-    ProjectManager getProjectManagerById(String projectManagerId);
+    CompletionStage<ProjectManager> insertProjectManager(ProjectManager projectManager);
 
-    List<ProjectManager> getAllProjectManager();
+    CompletionStage<ProjectManager> getProjectManagerById(String projectManagerId);
 
-    @Transactional
-    ProjectManager updateProjectManager(ProjectManager projectManager);
+    CompletionStage<List<ProjectManager>> getAllProjectManager();
 
-    @Transactional
-    void deleteProjectManager(String projectManagerId);
+    CompletionStage<ProjectManager> updateProjectManager(ProjectManager projectManager);
+
+    CompletionStage<Option<Void>> deleteProjectManager(ProjectManager projectManager);
 
     CompletionStage<Option<ProjectManager>> getProjectManagerByNameContainsIgnoreCase(String projectManagerName);
 

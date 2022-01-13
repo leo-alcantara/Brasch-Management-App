@@ -4,7 +4,6 @@ import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import the.bug.tech.brasch_management_system.repository.CompanyRepository;
 import the.bug.tech.brasch_management_system.model.Company;
 import the.bug.tech.brasch_management_system.repository.CompanyRepositoryAsync;
 
@@ -14,12 +13,10 @@ import java.util.concurrent.CompletionStage;
 @Service
 public class CompanyServiceImpl implements CompanyService {
 
-    private final CompanyRepository companyRepository;
     private final CompanyRepositoryAsync companyRepositoryAsync;
 
     @Autowired
-    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyRepositoryAsync companyRepositoryAsync) {
-        this.companyRepository = companyRepository;
+    public CompanyServiceImpl(CompanyRepositoryAsync companyRepositoryAsync) {
         this.companyRepositoryAsync = companyRepositoryAsync;
     }
 
@@ -29,18 +26,15 @@ public class CompanyServiceImpl implements CompanyService {
         return companyRepositoryAsync.insertCompany(company);
     }
 
-
     @Override
     public CompletionStage<Company> getCompanyById(String companyId) {
         return companyRepositoryAsync.getCompanyById(companyId);
     }
 
-
     @Override
     public CompletionStage<List<Company>> getAllCompanies() {
         return companyRepositoryAsync.getAllCompanies();
     }
-
 
     @Override
     @Transactional

@@ -2,7 +2,6 @@ package the.bug.tech.brasch_management_system.repository;
 
 import io.vavr.control.Option;
 import org.springframework.stereotype.Repository;
-import the.bug.tech.brasch_management_system.model.Company;
 import the.bug.tech.brasch_management_system.model.ContactPerson;
 
 import javax.persistence.EntityManager;
@@ -26,7 +25,7 @@ public class ContactPersonRepositoryAsync {
         this.entityManager = entityManager;
     }
 
-    public CompletionStage<ContactPerson> insertContactPerson (ContactPerson contactPerson) {
+    public CompletionStage<ContactPerson> insertContactPerson(ContactPerson contactPerson) {
         return CompletableFuture.supplyAsync(() -> contactPersonRepository.save(contactPerson), executor);
     }
 
@@ -49,15 +48,15 @@ public class ContactPersonRepositoryAsync {
         return CompletableFuture.supplyAsync(() -> entityManager.merge(contactPerson), executor);
     }
 
-    public CompletionStage<Option<ContactPerson>> getContactPersonByNameContainsIgnoreCase (String contactPersonName){
+    public CompletionStage<Option<ContactPerson>> getContactPersonByNameContainsIgnoreCase(String contactPersonName) {
         return CompletableFuture.supplyAsync(() -> contactPersonRepository.getContactPersonByNameContainsIgnoreCase(contactPersonName), executor);
     }
 
-    public CompletionStage<List<ContactPerson>> getContactPersonByCompanyContainsIgnoreCase(String companyName){
+    public CompletionStage<List<ContactPerson>> getContactPersonByCompanyContainsIgnoreCase(String companyName) {
         return CompletableFuture.supplyAsync(() -> contactPersonRepository.getContactPersonByCompanyContainsIgnoreCase(companyName), executor);
     }
 
-    public CompletionStage<List<ContactPerson>> getContactPersonByProjectContainsIgnoreCase (String projectName){
+    public CompletionStage<List<ContactPerson>> getContactPersonByProjectContainsIgnoreCase(String projectName) {
         return CompletableFuture.supplyAsync(() -> contactPersonRepository.getContactPersonByProjectContainsIgnoreCase(projectName), executor);
     }
 }

@@ -16,9 +16,9 @@ public interface ContactPersonService {
 
     CompletionStage<ContactPerson> updateContactPerson(ContactPerson contactPerson);
 
-    CompletionStage<Option<Void>> deleteContactPerson(ContactPerson contactPerson);
+    CompletionStage<Void> deleteContactPerson(ContactPerson contactPerson);
 
-    CompletionStage<Option<ContactPerson>> getContactPersonByNameContainsIgnoreCase(String contactPersonName);
+    CompletionStage<ContactPerson> getContactPersonByNameContainsIgnoreCase(String contactPersonName);
 
     CompletionStage<List<ContactPerson>> getContactPersonByCompanyContainsIgnoreCase(String companyName);
 

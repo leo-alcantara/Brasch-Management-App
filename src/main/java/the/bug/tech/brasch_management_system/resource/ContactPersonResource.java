@@ -1,7 +1,5 @@
 package the.bug.tech.brasch_management_system.resource;
 
-import io.swagger.annotations.ApiOperation;
-import io.vavr.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import the.bug.tech.brasch_management_system.service.EntityDtoMapper;
 import the.bug.tech.brasch_management_system.util.Responses;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 
@@ -35,7 +32,7 @@ public class ContactPersonResource {
     }
 
     @RequestMapping(produces = "application/json", value = "/create", method = RequestMethod.POST)
-    @ApiOperation(value = "Insert contact person instance", response = ContactPersonDto.class)
+    //@ApiOperation(value = "Insert contact person instance", response = ContactPersonDto.class)
     public CompletionStage<ResponseEntity<Result<String>>> create(@RequestBody ContactPersonDto contactPersonDto) {
         return contactPersonServiceImpl.insertContactPerson(converter.toContactPerson(contactPersonDto))
                 .thenApply(project -> Responses.ok(""))
@@ -45,21 +42,21 @@ public class ContactPersonResource {
                 });
     }
 
-    @RequestMapping(produces = "application/json", value = "/companyId", method = RequestMethod.POST)
-    @ApiOperation(value = "Gets contact person instance by id", response = ContactPersonDto.class)
-    public CompletionStage<ResponseEntity<Result<ContactPersonDto>>> getContactPersonById(@RequestParam Optional<String> contactPersonIdOpt) {
-        return contactPersonServiceImpl.getContactPersonById(contactPersonIdOpt.get())
+    @RequestMapping(produces = "application/json", value = "/getById", method = RequestMethod.POST)
+    //@ApiOperation(value = "Gets contact person instance by id", response = ContactPersonDto.class)
+    public CompletionStage<ResponseEntity<Result<ContactPersonDto>>> getContactPersonById(@RequestParam String contactPersonId) {
+        return contactPersonServiceImpl.getContactPersonById(contactPersonId)
                 .thenApply(contactPerson -> {
                     ContactPersonDto contactPersonDto = converter.toContactPersonDto(contactPerson);
                     return Responses.ok(contactPersonDto);
                 }).exceptionally(throwable -> {
-                    logger.error("Failed to get contact person = {}", contactPersonIdOpt, throwable);
+                    logger.error("Failed to get contact person = {}", contactPersonId, throwable);
                     return Responses.internalServerError();
                 });
     }
 
-    @RequestMapping(produces = "application/json", value = "/findAll", method = RequestMethod.GET)
-    @ApiOperation(value = "Gets all contact person instances", response = ContactPersonDto.class)
+    @RequestMapping(produces = "application/json", value = "/getAll", method = RequestMethod.GET)
+    //@ApiOperation(value = "Gets all contact person instances", response = ContactPersonDto.class)
     public CompletionStage<ResponseEntity<Result<List<ContactPersonDto>>>> getAllContactPerson() {
         return contactPersonServiceImpl.getAllContactPerson().thenApply(contactPerson -> {
             List<ContactPersonDto> contactPersonDtoList = contactPerson.stream()
@@ -73,7 +70,7 @@ public class ContactPersonResource {
     }
 
     @RequestMapping(produces = "application/json", value = "/update", method = RequestMethod.PUT)
-    @ApiOperation(value = "Updates contact person instance", response = ContactPersonDto.class)
+    //@ApiOperation(value = "Updates contact person instance", response = ContactPersonDto.class)
     public CompletionStage<ResponseEntity<Result<String>>> updateContactPerson(@RequestBody ContactPersonDto contactPersonDto) {
         return contactPersonServiceImpl.updateContactPerson(converter.toContactPerson(contactPersonDto))
                 .thenApply(company -> Responses.ok(""))
@@ -84,8 +81,8 @@ public class ContactPersonResource {
     }
 
     @RequestMapping(produces = "application/json", value = "/delete", method = RequestMethod.DELETE)
-    @ApiOperation(value = "Deletes contact person instance", response = ContactPersonDto.class)
-    public CompletionStage<ResponseEntity<Result<Option<Void>>>> deleteContactPerson(@RequestBody ContactPersonDto contactPersonDto) {
+    //@ApiOperation(value = "Deletes contact person instance", response = ContactPersonDto.class)
+    public CompletionStage<ResponseEntity<Result<Void>>> deleteContactPerson(@RequestBody ContactPersonDto contactPersonDto) {
         return contactPersonServiceImpl.deleteContactPerson(converter.toContactPerson(contactPersonDto))
                 .thenApply(Responses::ok)
                 .exceptionally(throwable -> {
@@ -95,11 +92,11 @@ public class ContactPersonResource {
     }
 
     @RequestMapping(produces = "application/json", value = "/getByName", method = RequestMethod.GET)
-    @ApiOperation(value = "Gets contact person instance by name", response = ContactPersonDto.class)
+    //@ApiOperation(value = "Gets contact person instance by name", response = ContactPersonDto.class)
     public CompletionStage<ResponseEntity<Result<ContactPersonDto>>> getContactPersonByNameContainsIgnoreCase(@RequestParam String contactPersonName) {
         return contactPersonServiceImpl.getContactPersonByNameContainsIgnoreCase(contactPersonName)
                 .thenApply(contactPerson -> {
-                    ContactPersonDto contactPersonDto = converter.toContactPersonDto(contactPerson.get());
+                    ContactPersonDto contactPersonDto = converter.toContactPersonDto(contactPerson);
                     return Responses.ok(contactPersonDto);
                 }).exceptionally(throwable -> {
                     logger.error("Failed to get company = {}", contactPersonName, throwable);
@@ -108,7 +105,7 @@ public class ContactPersonResource {
     }
 
     @RequestMapping(produces = "application/json", value = "/getByCompany", method = RequestMethod.GET)
-    @ApiOperation(value = "Gets contact person instance by company", response = ContactPersonDto.class)
+    //@ApiOperation(value = "Gets contact person instance by company", response = ContactPersonDto.class)
     public CompletionStage<ResponseEntity<Result<List<ContactPersonDto>>>> getContactPersonByCompanyContainsIgnoreCase(@RequestParam String companyName) {
         return contactPersonServiceImpl.getContactPersonByCompanyContainsIgnoreCase(companyName)
                 .thenApply(contactPersonList -> {
@@ -122,8 +119,8 @@ public class ContactPersonResource {
                 });
     }
 
-    @RequestMapping(produces = "application/json", value = "/getByCompany", method = RequestMethod.GET)
-    @ApiOperation(value = "Gets contact person instance by project", response = ContactPersonDto.class)
+    @RequestMapping(produces = "application/json", value = "/getByProject", method = RequestMethod.GET)
+    //@ApiOperation(value = "Gets contact person instance by project", response = ContactPersonDto.class)
     public CompletionStage<ResponseEntity<Result<List<ContactPersonDto>>>> getContactPersonByProjectContainsIgnoreCase(@RequestParam String projectName) {
         return contactPersonServiceImpl.getContactPersonByProjectContainsIgnoreCase(projectName)
                 .thenApply(contactPersonList -> {

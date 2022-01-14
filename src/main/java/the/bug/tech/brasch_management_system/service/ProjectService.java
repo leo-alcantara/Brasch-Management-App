@@ -18,9 +18,9 @@ public interface ProjectService {
 
     CompletionStage<Option<Void>> deleteProject(Project project);
 
-    CompletionStage<Option<Project>> getProjectByNameContainsIgnoreCase(String projectName);
+    CompletionStage<Project> getProjectByNameContainsIgnoreCase(String projectName);
 
-    CompletionStage<Option<Project>> getProjectByAddressContainsIgnoreCase(String projectAddress);
+    CompletionStage<Project> getProjectByAddressContainsIgnoreCase(String projectAddress);
 
     CompletionStage<List<Project>> getProjectByCompanyContainsIgnoreCase(String companyName);
 

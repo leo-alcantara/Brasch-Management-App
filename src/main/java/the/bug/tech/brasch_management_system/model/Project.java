@@ -21,31 +21,28 @@ public class Project {
     private LocalDate projectedStartDate;
     private LocalDate projectedConclusionDate;
 
-    @ManyToOne(cascade={CascadeType.DETACH,
+    @ManyToOne(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
-            CascadeType.PERSIST,
             CascadeType.REFRESH},
             fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @ManyToOne(cascade={CascadeType.DETACH,
+    @ManyToOne(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
-            CascadeType.PERSIST,
             CascadeType.REFRESH},
             fetch = FetchType.EAGER)
     @JoinColumn(name = "project_manager_id")
     private ProjectManager projectManager;
 
     @ManyToMany(cascade = {CascadeType.DETACH,
-    CascadeType.MERGE,
-    CascadeType.PERSIST,
-    CascadeType.REFRESH},
-    fetch = FetchType.LAZY)
+            CascadeType.MERGE,
+            CascadeType.REFRESH},
+            fetch = FetchType.LAZY)
     @JoinTable(name = "projects_and_contact_person"
             , joinColumns = @JoinColumn(name = "project_id")
             , inverseJoinColumns = @JoinColumn(name = "contact_person_id"))
-    private List<ContactPerson> contactPerson;
+    private List<ContactPerson> contactPersonList;
 
     public Project() {
 
@@ -53,7 +50,7 @@ public class Project {
 
     public Project(String projectName, String projectDescription, String projectLocal,
                    Status status, LocalDate projectedStartDate, LocalDate projectedConclusionDate,
-                   Company company, ProjectManager projectManager, List<ContactPerson> contactPerson) {
+                   Company company, ProjectManager projectManager, List<ContactPerson> contactPersonList) {
         this.projectName = projectName;
         this.projectDescription = projectDescription;
         this.projectLocal = projectLocal;
@@ -62,19 +59,34 @@ public class Project {
         this.projectedConclusionDate = projectedConclusionDate;
         this.company = company;
         this.projectManager = projectManager;
-        this.contactPerson = contactPerson;
+        this.contactPersonList = contactPersonList;
     }
 
     public Project(String projectName, String projectDescription, Status status, Company company,
-                   List<ContactPerson> contactPerson) {
+                   List<ContactPerson> contactPersonList) {
         this.projectName = projectName;
         this.projectDescription = projectDescription;
         this.status = status;
         this.company = company;
-        this.contactPerson = contactPerson;
+        this.contactPersonList = contactPersonList;
     }
 
     //Convenience Methods (ContactPerson, ProjectManager)
+    public boolean addContactPerson(ContactPerson contactPerson) {
+        return contactPersonList.add(contactPerson);
+    }
+
+    public boolean removeContactPerson(ContactPerson contactPerson) {
+        return contactPersonList.remove(contactPerson);
+    }
+
+    public void addProjectManager(ProjectManager projectManager) {
+        setProjectManager(projectManager);
+    }
+
+    public void removeProjectManager(ProjectManager projectManager) {
+        setProjectManager(null);
+    }
 
     public String getProjectId() {
         return projectId;
@@ -148,12 +160,12 @@ public class Project {
         this.projectManager = projectManager;
     }
 
-    public List<ContactPerson> getContactPerson() {
-        return contactPerson;
+    public List<ContactPerson> getContactPersonList() {
+        return contactPersonList;
     }
 
-    public void setContactPerson(List<ContactPerson> contactPerson) {
-        this.contactPerson = contactPerson;
+    public void setContactPersonList(List<ContactPerson> contactPerson) {
+        this.contactPersonList = contactPerson;
     }
 
     @Override
@@ -181,7 +193,7 @@ public class Project {
                 ", projectedConclusionDate=" + projectedConclusionDate +
                 ", company=" + company +
                 ", projectManager=" + projectManager +
-                ", contactPerson=" + contactPerson +
+                ", contactPerson=" + contactPersonList +
                 '}';
     }
 }

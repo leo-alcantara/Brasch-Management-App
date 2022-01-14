@@ -16,11 +16,11 @@ public interface CompanyService {
 
     CompletionStage<Company> updateCompany(Company company);
 
-    CompletionStage<Option<Void>> deleteCompany(Company company);
+    CompletionStage<Void> deleteCompany(Company company);
 
-    CompletionStage<Option<Company>> getCompanyByCompanyNameContainsIgnoreCase(String companyName);
+    CompletionStage<Company> getCompanyByCompanyNameContainsIgnoreCase(String companyName);
 
-    CompletionStage<Option<Company>> getCompanyByProjectNameContainsIgnoreCase(String projectName);
+    CompletionStage<Company> getCompanyByProjectNameContainsIgnoreCase(String projectName);
 
-    CompletionStage<Option<Company>> getCompanyByContactPersonContainsIgnoreCase(String name);
+    CompletionStage<Company> getCompanyByContactPersonContainsIgnoreCase(String name);
 }

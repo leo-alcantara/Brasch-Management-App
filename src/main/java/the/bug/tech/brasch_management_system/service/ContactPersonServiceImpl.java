@@ -44,12 +44,12 @@ public class ContactPersonServiceImpl implements ContactPersonService {
 
     @Override
     @Transactional
-    public CompletionStage<Option<Void>> deleteContactPerson(ContactPerson contactPerson) {
+    public CompletionStage<Void> deleteContactPerson(ContactPerson contactPerson) {
         return contactPersonRepositoryAsync.deleteContactPerson(contactPerson);
     }
 
     @Override
-    public CompletionStage<Option<ContactPerson>> getContactPersonByNameContainsIgnoreCase(String contactPersonName) {
+    public CompletionStage<ContactPerson> getContactPersonByNameContainsIgnoreCase(String contactPersonName) {
         return contactPersonRepositoryAsync.getContactPersonByNameContainsIgnoreCase(contactPersonName);
     }
 

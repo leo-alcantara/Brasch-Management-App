@@ -1,6 +1,5 @@
 package the.bug.tech.brasch_management_system.service;
 
-import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,17 +43,17 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 
     @Override
     @Transactional
-    public CompletionStage<Option<Void>> deleteProjectManager(ProjectManager projectManager) {
+    public CompletionStage<Void> deleteProjectManager(ProjectManager projectManager) {
         return projectManagerRepositoryAsync.deleteProjectManager(projectManager);
     }
 
     @Override
-    public CompletionStage<Option<ProjectManager>> getProjectManagerByNameContainsIgnoreCase(String projectManagerName) {
+    public CompletionStage<ProjectManager> getProjectManagerByNameContainsIgnoreCase(String projectManagerName) {
         return projectManagerRepositoryAsync.getProjectManagerByNameContainsIgnoreCase(projectManagerName);
     }
 
     @Override
-    public CompletionStage<Option<ProjectManager>> getProjectManagerByProjectContainsIgnoreCase(String projectName) {
+    public CompletionStage<ProjectManager> getProjectManagerByProjectContainsIgnoreCase(String projectName) {
         return projectManagerRepositoryAsync.getProjectManagerByProjectContainsIgnoreCase(projectName);
     }
 }

@@ -16,9 +16,9 @@ public interface ProjectManagerService {
 
     CompletionStage<ProjectManager> updateProjectManager(ProjectManager projectManager);
 
-    CompletionStage<Option<Void>> deleteProjectManager(ProjectManager projectManager);
+    CompletionStage<Void> deleteProjectManager(ProjectManager projectManager);
 
-    CompletionStage<Option<ProjectManager>> getProjectManagerByNameContainsIgnoreCase(String projectManagerName);
+    CompletionStage<ProjectManager> getProjectManagerByNameContainsIgnoreCase(String projectManagerName);
 
-    CompletionStage<Option<ProjectManager>> getProjectManagerByProjectContainsIgnoreCase(String projectName);
+    CompletionStage<ProjectManager> getProjectManagerByProjectContainsIgnoreCase(String projectName);
 }

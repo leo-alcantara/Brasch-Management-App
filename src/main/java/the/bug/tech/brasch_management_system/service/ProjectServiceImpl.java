@@ -49,12 +49,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public CompletionStage<Option<Project>> getProjectByNameContainsIgnoreCase(String projectName) {
+    public CompletionStage<Project> getProjectByNameContainsIgnoreCase(String projectName) {
         return projectRepositoryAsync.getProjectByNameContainsIgnoreCase(projectName);
     }
 
     @Override
-    public CompletionStage<Option<Project>> getProjectByAddressContainsIgnoreCase(String projectAddress) {
+    public CompletionStage<Project> getProjectByAddressContainsIgnoreCase(String projectAddress) {
         return projectRepositoryAsync.getProjectByAddressContainsIgnoreCase(projectAddress);
     }
 

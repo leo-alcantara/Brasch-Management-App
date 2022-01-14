@@ -44,22 +44,22 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @Transactional
-    public CompletionStage<Option<Void>> deleteCompany(Company company) {
+    public CompletionStage<Void> deleteCompany(Company company) {
         return companyRepositoryAsync.deleteCompany(company);
     }
 
     @Override
-    public CompletionStage<Option<Company>> getCompanyByCompanyNameContainsIgnoreCase(String companyName) {
+    public CompletionStage<Company> getCompanyByCompanyNameContainsIgnoreCase(String companyName) {
         return companyRepositoryAsync.getCompanyByCompanyNameContainsIgnoreCase(companyName);
     }
 
     @Override
-    public CompletionStage<Option<Company>> getCompanyByProjectNameContainsIgnoreCase(String projectName) {
+    public CompletionStage<Company> getCompanyByProjectNameContainsIgnoreCase(String projectName) {
         return companyRepositoryAsync.getCompanyByProjectNameContainsIgnoreCase(projectName);
     }
 
     @Override
-    public CompletionStage<Option<Company>> getCompanyByContactPersonContainsIgnoreCase(String name) {
+    public CompletionStage<Company> getCompanyByContactPersonContainsIgnoreCase(String name) {
         return companyRepositoryAsync.getCompanyByContactPersonContainsIgnoreCase(name);
     }
 }

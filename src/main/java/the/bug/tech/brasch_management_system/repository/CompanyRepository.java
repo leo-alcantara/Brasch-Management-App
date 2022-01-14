@@ -11,13 +11,13 @@ import the.bug.tech.brasch_management_system.model.Company;
 public interface CompanyRepository extends JpaRepository<Company, String> {
 
     @Query("SELECT c FROM Company c WHERE UPPER(c.companyName) LIKE UPPER(CONCAT('%', :companyName, '%'))")
-    Option<Company> getCompanyByCompanyNameContainsIgnoreCase(@Param("companyName") String companyName);
+    Company getCompanyByCompanyNameContainsIgnoreCase(@Param("companyName") String companyName);
 
     @Query("SELECT c FROM Company c JOIN FETCH c.projectsList AS p WHERE UPPER(p.projectName) LIKE UPPER(CONCAT('%', :projectName, '%'))")
-    Option<Company> getCompanyByProjectNameContainsIgnoreCase(@Param("projectName") String projectName);
+    Company getCompanyByProjectNameContainsIgnoreCase(@Param("projectName") String projectName);
 
     @Query("SELECT c FROM Company c JOIN FETCH c.contactPersonList AS cp WHERE " +
-            "UPPER(CONCAT(cp.contactPersonPerson.firstName, cp.contactPersonPerson.lastName))  LIKE UPPER(CONCAT('%', :name, '%') )")
-    Option<Company> getCompanyByContactPersonContainsIgnoreCase(@Param("contactPersonName") String contactPersonName);
+            "UPPER(CONCAT(cp.contactPersonPerson.firstName, cp.contactPersonPerson.lastName))  LIKE UPPER(CONCAT('%', :contactPersonName, '%') )")
+    Company getCompanyByContactPersonContainsIgnoreCase(@Param("contactPersonName") String contactPersonName);
 
 }

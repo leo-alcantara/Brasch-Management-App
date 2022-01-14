@@ -1,6 +1,7 @@
 package the.bug.tech.brasch_management_system.model;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 
 import javax.persistence.*;
 import java.util.List;
@@ -21,7 +22,6 @@ public class ProjectManager {
 
     @OneToMany(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
-            CascadeType.PERSIST,
             CascadeType.REFRESH},
             fetch = FetchType.LAZY,
     mappedBy = "projectManager")
@@ -33,6 +33,14 @@ public class ProjectManager {
     public ProjectManager(Person projectManagerPerson, List<Project> projectList) {
         this.projectManagerPerson = projectManagerPerson;
         this.projectList = projectList;
+    }
+
+    public boolean addProject(Project project) {
+        return projectList.add(project);
+    }
+
+    public boolean removeProject(Project project) {
+        return projectList.remove(project);
     }
 
     public String getProjectManagerId() {

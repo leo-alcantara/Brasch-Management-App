@@ -1,7 +1,5 @@
 package the.bug.tech.brasch_management_system.resource;
 
-import io.swagger.annotations.ApiOperation;
-import io.vavr.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import the.bug.tech.brasch_management_system.service.EntityDtoMapper;
 import the.bug.tech.brasch_management_system.util.Responses;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 
@@ -34,7 +31,7 @@ public class CompanyResource {
     }
 
     @RequestMapping(produces = "application/json", value = "/create", method = RequestMethod.POST)
-    @ApiOperation(value = "Inserts company instance", response = CompanyDto.class)
+    //@ApiOperation(value = "Inserts company instance", response = CompanyDto.class)
     public CompletionStage<ResponseEntity<Result<String>>> insertCompany(@RequestBody CompanyDto companyDto) {
         return companyServiceImpl.insertCompany(converter.toCompany(companyDto))
                 .thenApply(project -> Responses.ok(""))
@@ -44,21 +41,21 @@ public class CompanyResource {
                 });
     }
 
-    @RequestMapping(produces = "application/json", value = "/companyId", method = RequestMethod.POST)
-    @ApiOperation(value = "Gets company instance by id", response = CompanyDto.class)
-    public CompletionStage<ResponseEntity<Result<CompanyDto>>> getCompanyById(@RequestParam Optional<String> companyIdOpt) {
-        return companyServiceImpl.getCompanyById(companyIdOpt.get())
+    @RequestMapping(produces = "application/json", value = "/getById", method = RequestMethod.POST)
+    //@ApiOperation(value = "Gets company instance by id", response = CompanyDto.class)
+    public CompletionStage<ResponseEntity<Result<CompanyDto>>> getCompanyById(@RequestParam String companyId) {
+        return companyServiceImpl.getCompanyById(companyId)
                 .thenApply(company -> {
                     CompanyDto companyDto = converter.toCompanyDto(company);
                     return Responses.ok(companyDto);
                 }).exceptionally(throwable -> {
-                    logger.error("Failed to get company = {}", companyIdOpt, throwable);
+                    logger.error("Failed to get company = {}", companyId, throwable);
                     return Responses.internalServerError();
                 });
     }
 
-    @RequestMapping(produces = "application/json", value = "/findAll", method = RequestMethod.GET)
-    @ApiOperation(value = "Gets all company instances", response = CompanyDto.class)
+    @RequestMapping(produces = "application/json", value = "/getAll", method = RequestMethod.GET)
+    //@ApiOperation(value = "Gets all company instances", response = CompanyDto.class)
     public CompletionStage<ResponseEntity<Result<List<CompanyDto>>>> getAllCompanies() {
         return companyServiceImpl.getAllCompanies()
                 .thenApply(companies -> {
@@ -74,7 +71,7 @@ public class CompanyResource {
     }
 
     @RequestMapping(produces = "application/json", value = "/update", method = RequestMethod.PUT)
-    @ApiOperation(value = "Updates company instance", response = CompanyDto.class)
+    //@ApiOperation(value = "Updates company instance", response = CompanyDto.class)
     public CompletionStage<ResponseEntity<Result<String>>> updateCompany(@RequestBody CompanyDto companyDto) {
         return companyServiceImpl.updateCompany(converter.toCompany(companyDto))
                 .thenApply(company -> Responses.ok(""))
@@ -85,8 +82,8 @@ public class CompanyResource {
     }
 
     @RequestMapping(produces = "application/json", value = "/delete", method = RequestMethod.DELETE)
-    @ApiOperation(value = "Deletes company instance", response = CompanyDto.class)
-    public CompletionStage<ResponseEntity<Result<Option<Void>>>> deleteCompany(@RequestBody CompanyDto companyDto) {
+    //@ApiOperation(value = "Deletes company instance", response = CompanyDto.class)
+    public CompletionStage<ResponseEntity<Result<Void>>> deleteCompany(@RequestBody CompanyDto companyDto) {
         return companyServiceImpl.deleteCompany(converter.toCompany(companyDto))
                 .thenApply(Responses::ok)
                 .exceptionally(throwable -> {
@@ -96,11 +93,11 @@ public class CompanyResource {
     }
 
     @RequestMapping(produces = "application/json", value = "/getByName", method = RequestMethod.GET)
-    @ApiOperation(value = "Gets company instance by name", response = CompanyDto.class)
+    //@ApiOperation(value = "Gets company instance by name", response = CompanyDto.class)
     public CompletionStage<ResponseEntity<Result<CompanyDto>>> getCompanyByCompanyNameContainsIgnoreCase(@RequestParam String companyName) {
         return companyServiceImpl.getCompanyByCompanyNameContainsIgnoreCase(companyName)
                 .thenApply(company -> {
-                    CompanyDto companyDto = converter.toCompanyDto(company.get());
+                    CompanyDto companyDto = converter.toCompanyDto(company);
                     return Responses.ok(companyDto);
                 }).exceptionally(throwable -> {
                     logger.error("Failed to get company = {}", companyName, throwable);
@@ -109,11 +106,11 @@ public class CompanyResource {
     }
 
     @RequestMapping(produces = "application/json", value = "/getByProject", method = RequestMethod.GET)
-    @ApiOperation(value = "Gets company instance by project", response = CompanyDto.class)
+    //@ApiOperation(value = "Gets company instance by project", response = CompanyDto.class)
     public CompletionStage<ResponseEntity<Result<CompanyDto>>> getCompanyByProjectNameContainsIgnoreCase(@RequestParam String projectName) {
         return companyServiceImpl.getCompanyByProjectNameContainsIgnoreCase(projectName)
                 .thenApply(company -> {
-                    CompanyDto companyDto = converter.toCompanyDto(company.get());
+                    CompanyDto companyDto = converter.toCompanyDto(company);
                     return Responses.ok(companyDto);
                 }).exceptionally(throwable -> {
                     logger.error("Failed to get company = {}", projectName, throwable);
@@ -122,11 +119,11 @@ public class CompanyResource {
     }
 
     @RequestMapping(produces = "application/json", value = "/getByContactPerson", method = RequestMethod.GET)
-    @ApiOperation(value = "Gets company instance by contact person", response = CompanyDto.class)
-    public CompletionStage<ResponseEntity<Result<CompanyDto>>> findCompanyByContactPersonContainsIgnoreCase(@RequestParam String contactPersonName) {
+    //@ApiOperation(value = "Gets company instance by contact person", response = CompanyDto.class)
+    public CompletionStage<ResponseEntity<Result<CompanyDto>>> getCompanyByContactPersonContainsIgnoreCase(@RequestParam String contactPersonName) {
         return companyServiceImpl.getCompanyByContactPersonContainsIgnoreCase(contactPersonName)
                 .thenApply(company -> {
-                    CompanyDto companyDto = converter.toCompanyDto(company.get());
+                    CompanyDto companyDto = converter.toCompanyDto(company);
                     return Responses.ok(companyDto);
                 }).exceptionally(throwable -> {
                     logger.error("Failed to get company = {}", contactPersonName, throwable);

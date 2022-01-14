@@ -21,7 +21,6 @@ public class ContactPerson {
 
     @ManyToOne(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
-            CascadeType.PERSIST,
             CascadeType.REFRESH},
             fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
@@ -29,12 +28,11 @@ public class ContactPerson {
 
     @ManyToMany(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
-            CascadeType.PERSIST,
             CascadeType.REFRESH},
             fetch = FetchType.LAZY)
-    @JoinTable(name = "projects_and_contact_person"
-            , joinColumns = @JoinColumn(name = "contact_person_id")
-            , inverseJoinColumns = @JoinColumn(name = "project_id"))
+    @JoinTable(name = "projects_and_contact_person",
+            joinColumns = @JoinColumn(name = "contact_person_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id"))
     private List<Project> projectList;
 
     public ContactPerson() {

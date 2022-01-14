@@ -38,7 +38,7 @@ public class ProjectManagerRepositoryAsync {
         return CompletableFuture.supplyAsync(() -> projectManagerRepository.findAll(), executor);
     }
 
-    public CompletionStage<Option<Void>> deleteProjectManager(ProjectManager projectManager) {
+    public CompletionStage<Void> deleteProjectManager(ProjectManager projectManager) {
         return CompletableFuture.supplyAsync(() -> {
             projectManagerRepository.delete(projectManager);
             return null;
@@ -49,11 +49,11 @@ public class ProjectManagerRepositoryAsync {
         return CompletableFuture.supplyAsync(() -> entityManager.merge(projectManager), executor);
     }
 
-    public CompletionStage<Option<ProjectManager>> getProjectManagerByNameContainsIgnoreCase(String projectManagerName) {
+    public CompletionStage<ProjectManager> getProjectManagerByNameContainsIgnoreCase(String projectManagerName) {
         return CompletableFuture.supplyAsync(() -> projectManagerRepository.getProjectManagerByNameContainsIgnoreCase(projectManagerName), executor);
     }
 
-    public CompletionStage<Option<ProjectManager>> getProjectManagerByProjectContainsIgnoreCase(String projectName) {
+    public CompletionStage<ProjectManager> getProjectManagerByProjectContainsIgnoreCase(String projectName) {
         return CompletableFuture.supplyAsync(() -> projectManagerRepository.getProjectManagerByProjectContainsIgnoreCase(projectName), executor);
     }
 }

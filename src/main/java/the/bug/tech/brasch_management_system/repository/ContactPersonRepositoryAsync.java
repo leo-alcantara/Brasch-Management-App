@@ -37,7 +37,7 @@ public class ContactPersonRepositoryAsync {
         return CompletableFuture.supplyAsync(() -> contactPersonRepository.findAll(), executor);
     }
 
-    public CompletionStage<Option<Void>> deleteContactPerson(ContactPerson contactPerson) {
+    public CompletionStage<Void> deleteContactPerson(ContactPerson contactPerson) {
         return CompletableFuture.supplyAsync(() -> {
             contactPersonRepository.delete(contactPerson);
             return null;
@@ -48,7 +48,7 @@ public class ContactPersonRepositoryAsync {
         return CompletableFuture.supplyAsync(() -> entityManager.merge(contactPerson), executor);
     }
 
-    public CompletionStage<Option<ContactPerson>> getContactPersonByNameContainsIgnoreCase(String contactPersonName) {
+    public CompletionStage<ContactPerson> getContactPersonByNameContainsIgnoreCase(String contactPersonName) {
         return CompletableFuture.supplyAsync(() -> contactPersonRepository.getContactPersonByNameContainsIgnoreCase(contactPersonName), executor);
     }
 

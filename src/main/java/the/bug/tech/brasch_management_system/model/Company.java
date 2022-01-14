@@ -20,14 +20,14 @@ public class Company {
     @OneToMany(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.PERSIST,
-            CascadeType.REFRESH},
+            CascadeType.REFRESH,
+            CascadeType.REMOVE},
             fetch = FetchType.LAZY,
-    mappedBy = "company")
+            mappedBy = "company")
     private List<ContactPerson> contactPersonList;
 
     @OneToMany(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
-            CascadeType.PERSIST,
             CascadeType.REFRESH},
             fetch = FetchType.LAZY,
             mappedBy = "company")
@@ -46,6 +46,21 @@ public class Company {
     }
 
     //Convenience Methods(Project, ContactPerson)
+    public boolean addProject(Project project) {
+        return projectsList.add(project);
+    }
+
+    public boolean removeProject(Project project) {
+        return projectsList.remove(project);
+    }
+
+    public boolean addContactPerson(ContactPerson contactPerson) {
+        return contactPersonList.add(contactPerson);
+    }
+
+    public boolean removeContactPerson(ContactPerson contactPerson) {
+        return contactPersonList.remove(contactPerson);
+    }
 
     public String getCompanyId() {
         return companyId;

@@ -13,7 +13,7 @@ import java.util.List;
 public interface ContactPersonRepository extends JpaRepository<ContactPerson, String> {
 
     @Query("SELECT cp FROM ContactPerson cp JOIN FETCH cp.contactPersonPerson AS p WHERE UPPER(CONCAT(p.firstName, p.lastName)) LIKE UPPER(CONCAT('%', :contactPersonName, '%') )")
-    Option<ContactPerson> getContactPersonByNameContainsIgnoreCase(@Param("contactPersonName") String contactPersonName);
+    ContactPerson getContactPersonByNameContainsIgnoreCase(@Param("contactPersonName") String contactPersonName);
 
     @Query("SELECT cp FROM ContactPerson cp JOIN FETCH cp.company AS c WHERE UPPER(c.companyName) LIKE UPPER(CONCAT('%', :companyName, '%'))")
     List<ContactPerson> getContactPersonByCompanyContainsIgnoreCase(@Param("companyName") String companyName);

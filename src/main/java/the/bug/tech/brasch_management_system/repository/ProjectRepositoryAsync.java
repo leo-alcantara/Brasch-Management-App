@@ -48,11 +48,11 @@ public class ProjectRepositoryAsync {
         return CompletableFuture.supplyAsync(() -> entityManager.merge(project), executor);
     }
 
-    public CompletionStage<Option<Project>> getProjectByNameContainsIgnoreCase(String projectName) {
+    public CompletionStage<Project> getProjectByNameContainsIgnoreCase(String projectName) {
         return CompletableFuture.supplyAsync(() -> projectRepository.getProjectByNameContainsIgnoreCase(projectName), executor);
     }
 
-    public CompletionStage<Option<Project>> getProjectByAddressContainsIgnoreCase(String projectAddress) {
+    public CompletionStage<Project> getProjectByAddressContainsIgnoreCase(String projectAddress) {
         return CompletableFuture.supplyAsync(() -> projectRepository.getProjectByAddressContainsIgnoreCase(projectAddress), executor);
     }
 

@@ -37,7 +37,7 @@ public class CompanyRepositoryAsync {
         return CompletableFuture.supplyAsync(() -> companyRepository.findAll(), executor);
     }
 
-    public CompletionStage<Option<Void>> deleteCompany(Company company) {
+    public CompletionStage<Void> deleteCompany(Company company) {
         return CompletableFuture.supplyAsync(() -> {
             companyRepository.delete(company);
             return null;
@@ -48,15 +48,15 @@ public class CompanyRepositoryAsync {
         return CompletableFuture.supplyAsync(() -> entityManager.merge(company), executor);
     }
 
-    public CompletionStage<Option<Company>> getCompanyByCompanyNameContainsIgnoreCase(String companyName) {
+    public CompletionStage<Company> getCompanyByCompanyNameContainsIgnoreCase(String companyName) {
         return CompletableFuture.supplyAsync(() -> companyRepository.getCompanyByCompanyNameContainsIgnoreCase(companyName), executor);
     }
 
-    public CompletionStage<Option<Company>> getCompanyByProjectNameContainsIgnoreCase(String projectName) {
+    public CompletionStage<Company> getCompanyByProjectNameContainsIgnoreCase(String projectName) {
         return CompletableFuture.supplyAsync(() -> companyRepository.getCompanyByProjectNameContainsIgnoreCase(projectName), executor);
     }
 
-    public CompletionStage<Option<Company>> getCompanyByContactPersonContainsIgnoreCase(String contactPersonName) {
+    public CompletionStage<Company> getCompanyByContactPersonContainsIgnoreCase(String contactPersonName) {
         return CompletableFuture.supplyAsync(() -> companyRepository.getCompanyByContactPersonContainsIgnoreCase(contactPersonName), executor);
     }
 }

@@ -70,7 +70,7 @@ public class EntityDtoMapper {
                 project.getProjectedConclusionDate(),
                 project.getCompany(),
                 project.getProjectManager(),
-                project.getContactPerson());
+                project.getContactPersonList());
     }
 
     public ProjectManager toProjectManager(ProjectManagerDto projectManagerDto) {

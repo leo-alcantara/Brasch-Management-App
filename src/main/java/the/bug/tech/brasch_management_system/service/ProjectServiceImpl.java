@@ -13,63 +13,63 @@ import java.util.concurrent.CompletionStage;
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
-    private final ProjectRepositoryAsync projectRepositoryAsync;
+    private final ProjectRepositoryAsync PROJECT_REPOSITORY_ASYNC;
 
     @Autowired
-    public ProjectServiceImpl(ProjectRepositoryAsync projectRepositoryAsync) {
-        this.projectRepositoryAsync = projectRepositoryAsync;
+    public ProjectServiceImpl(ProjectRepositoryAsync PROJECT_REPOSITORY_ASYNC) {
+        this.PROJECT_REPOSITORY_ASYNC = PROJECT_REPOSITORY_ASYNC;
     }
 
     @Override
     @Transactional
     public CompletionStage<Project> insertProject(Project project) {
-        return projectRepositoryAsync.insertProject(project);
+        return PROJECT_REPOSITORY_ASYNC.insertProject(project);
     }
 
     @Override
     public CompletionStage<Project> getProjectById(String projectId) {
-        return projectRepositoryAsync.getProjectById(projectId);
+        return PROJECT_REPOSITORY_ASYNC.getProjectById(projectId);
     }
 
     @Override
     public CompletionStage<List<Project>> getAllProject() {
-        return projectRepositoryAsync.getAllProjects();
+        return PROJECT_REPOSITORY_ASYNC.getAllProjects();
     }
 
     @Override
     @Transactional
     public CompletionStage<Project> updateProject(Project project) {
-        return projectRepositoryAsync.updateProject(project);
+        return PROJECT_REPOSITORY_ASYNC.updateProject(project);
     }
 
     @Override
     @Transactional
     public CompletionStage<Option<Void>> deleteProject(Project project) {
-        return projectRepositoryAsync.deleteProject(project);
+        return PROJECT_REPOSITORY_ASYNC.deleteProject(project);
     }
 
     @Override
     public CompletionStage<Project> getProjectByNameContainsIgnoreCase(String projectName) {
-        return projectRepositoryAsync.getProjectByNameContainsIgnoreCase(projectName);
+        return PROJECT_REPOSITORY_ASYNC.getProjectByNameContainsIgnoreCase(projectName);
     }
 
     @Override
     public CompletionStage<Project> getProjectByAddressContainsIgnoreCase(String projectAddress) {
-        return projectRepositoryAsync.getProjectByAddressContainsIgnoreCase(projectAddress);
+        return PROJECT_REPOSITORY_ASYNC.getProjectByAddressContainsIgnoreCase(projectAddress);
     }
 
     @Override
     public CompletionStage<List<Project>> getProjectByCompanyContainsIgnoreCase(String companyName) {
-        return projectRepositoryAsync.getProjectByCompanyContainsIgnoreCase(companyName);
+        return PROJECT_REPOSITORY_ASYNC.getProjectByCompanyContainsIgnoreCase(companyName);
     }
 
     @Override
     public CompletionStage<List<Project>> getProjectByProjectManagerContainsIgnoreCase(String projectManagerName) {
-        return projectRepositoryAsync.getProjectByProjectManagerContainsIgnoreCase(projectManagerName);
+        return PROJECT_REPOSITORY_ASYNC.getProjectByProjectManagerContainsIgnoreCase(projectManagerName);
     }
 
     @Override
     public CompletionStage<List<Project>> getProjectByContactPersonContainsIgnoreCase(String contactPersonName) {
-        return projectRepositoryAsync.getProjectByContactPersonContainsIgnoreCase(contactPersonName);
+        return PROJECT_REPOSITORY_ASYNC.getProjectByContactPersonContainsIgnoreCase(contactPersonName);
     }
 }

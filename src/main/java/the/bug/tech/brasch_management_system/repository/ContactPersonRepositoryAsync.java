@@ -1,6 +1,5 @@
 package the.bug.tech.brasch_management_system.repository;
 
-import io.vavr.control.Option;
 import org.springframework.stereotype.Repository;
 import the.bug.tech.brasch_management_system.model.ContactPerson;
 
@@ -14,49 +13,49 @@ import java.util.concurrent.Executor;
 @Repository
 public class ContactPersonRepositoryAsync {
 
-    private final ContactPersonRepository contactPersonRepository;
-    private final Executor executor;
+    private final ContactPersonRepository CONTACT_PERSON_REPOSITORY;
+    private final Executor EXECUTOR;
     @PersistenceContext
-    private final EntityManager entityManager;
+    private final EntityManager ENTITY_MANAGER;
 
-    public ContactPersonRepositoryAsync(ContactPersonRepository contactPersonRepository, Executor executor, EntityManager entityManager) {
-        this.contactPersonRepository = contactPersonRepository;
-        this.executor = executor;
-        this.entityManager = entityManager;
+    public ContactPersonRepositoryAsync(ContactPersonRepository CONTACT_PERSON_REPOSITORY, Executor EXECUTOR, EntityManager ENTITY_MANAGER) {
+        this.CONTACT_PERSON_REPOSITORY = CONTACT_PERSON_REPOSITORY;
+        this.EXECUTOR = EXECUTOR;
+        this.ENTITY_MANAGER = ENTITY_MANAGER;
     }
 
     public CompletionStage<ContactPerson> insertContactPerson(ContactPerson contactPerson) {
-        return CompletableFuture.supplyAsync(() -> contactPersonRepository.save(contactPerson), executor);
+        return CompletableFuture.supplyAsync(() -> CONTACT_PERSON_REPOSITORY.save(contactPerson), EXECUTOR);
     }
 
     public CompletionStage<ContactPerson> getContactPersonById(String contactPersonId) {
-        return CompletableFuture.supplyAsync(() -> contactPersonRepository.getById(contactPersonId), executor);
+        return CompletableFuture.supplyAsync(() -> CONTACT_PERSON_REPOSITORY.getById(contactPersonId), EXECUTOR);
     }
 
     public CompletionStage<List<ContactPerson>> getAllContactPerson() {
-        return CompletableFuture.supplyAsync(() -> contactPersonRepository.findAll(), executor);
+        return CompletableFuture.supplyAsync(() -> CONTACT_PERSON_REPOSITORY.findAll(), EXECUTOR);
     }
 
     public CompletionStage<Void> deleteContactPerson(ContactPerson contactPerson) {
         return CompletableFuture.supplyAsync(() -> {
-            contactPersonRepository.delete(contactPerson);
+            CONTACT_PERSON_REPOSITORY.delete(contactPerson);
             return null;
-        }, executor);
+        }, EXECUTOR);
     }
 
     public CompletionStage<ContactPerson> updateContactPerson(ContactPerson contactPerson) {
-        return CompletableFuture.supplyAsync(() -> entityManager.merge(contactPerson), executor);
+        return CompletableFuture.supplyAsync(() -> ENTITY_MANAGER.merge(contactPerson), EXECUTOR);
     }
 
     public CompletionStage<ContactPerson> getContactPersonByNameContainsIgnoreCase(String contactPersonName) {
-        return CompletableFuture.supplyAsync(() -> contactPersonRepository.getContactPersonByNameContainsIgnoreCase(contactPersonName), executor);
+        return CompletableFuture.supplyAsync(() -> CONTACT_PERSON_REPOSITORY.getContactPersonByNameContainsIgnoreCase(contactPersonName), EXECUTOR);
     }
 
     public CompletionStage<List<ContactPerson>> getContactPersonByCompanyContainsIgnoreCase(String companyName) {
-        return CompletableFuture.supplyAsync(() -> contactPersonRepository.getContactPersonByCompanyContainsIgnoreCase(companyName), executor);
+        return CompletableFuture.supplyAsync(() -> CONTACT_PERSON_REPOSITORY.getContactPersonByCompanyContainsIgnoreCase(companyName), EXECUTOR);
     }
 
     public CompletionStage<List<ContactPerson>> getContactPersonByProjectContainsIgnoreCase(String projectName) {
-        return CompletableFuture.supplyAsync(() -> contactPersonRepository.getContactPersonByProjectContainsIgnoreCase(projectName), executor);
+        return CompletableFuture.supplyAsync(() -> CONTACT_PERSON_REPOSITORY.getContactPersonByProjectContainsIgnoreCase(projectName), EXECUTOR);
     }
 }

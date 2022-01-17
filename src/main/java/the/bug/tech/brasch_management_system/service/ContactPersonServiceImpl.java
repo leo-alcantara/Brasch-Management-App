@@ -1,6 +1,5 @@
 package the.bug.tech.brasch_management_system.service;
 
-import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,53 +12,53 @@ import java.util.concurrent.CompletionStage;
 @Service
 public class ContactPersonServiceImpl implements ContactPersonService {
 
-    private ContactPersonRepositoryAsync contactPersonRepositoryAsync;
+    private ContactPersonRepositoryAsync CONTACT_PERSON_REPOSITORY_ASYNC;
 
     @Autowired
-    public ContactPersonServiceImpl(ContactPersonRepositoryAsync contactPersonRepositoryAsync) {
-        this.contactPersonRepositoryAsync = contactPersonRepositoryAsync;
+    public ContactPersonServiceImpl(ContactPersonRepositoryAsync CONTACT_PERSON_REPOSITORY_ASYNC) {
+        this.CONTACT_PERSON_REPOSITORY_ASYNC = CONTACT_PERSON_REPOSITORY_ASYNC;
     }
 
     @Override
     @Transactional
     public CompletionStage<ContactPerson> insertContactPerson(ContactPerson contactPerson) {
-        return contactPersonRepositoryAsync.insertContactPerson(contactPerson);
+        return CONTACT_PERSON_REPOSITORY_ASYNC.insertContactPerson(contactPerson);
     }
 
     @Override
     public CompletionStage<ContactPerson> getContactPersonById(String contactPersonId) {
-        return contactPersonRepositoryAsync.getContactPersonById(contactPersonId);
+        return CONTACT_PERSON_REPOSITORY_ASYNC.getContactPersonById(contactPersonId);
     }
 
     @Override
     public CompletionStage<List<ContactPerson>> getAllContactPerson() {
-        return contactPersonRepositoryAsync.getAllContactPerson();
+        return CONTACT_PERSON_REPOSITORY_ASYNC.getAllContactPerson();
     }
 
     @Override
     @Transactional
     public CompletionStage<ContactPerson> updateContactPerson(ContactPerson contactPerson) {
-        return contactPersonRepositoryAsync.updateContactPerson(contactPerson);
+        return CONTACT_PERSON_REPOSITORY_ASYNC.updateContactPerson(contactPerson);
     }
 
     @Override
     @Transactional
     public CompletionStage<Void> deleteContactPerson(ContactPerson contactPerson) {
-        return contactPersonRepositoryAsync.deleteContactPerson(contactPerson);
+        return CONTACT_PERSON_REPOSITORY_ASYNC.deleteContactPerson(contactPerson);
     }
 
     @Override
     public CompletionStage<ContactPerson> getContactPersonByNameContainsIgnoreCase(String contactPersonName) {
-        return contactPersonRepositoryAsync.getContactPersonByNameContainsIgnoreCase(contactPersonName);
+        return CONTACT_PERSON_REPOSITORY_ASYNC.getContactPersonByNameContainsIgnoreCase(contactPersonName);
     }
 
     @Override
     public CompletionStage<List<ContactPerson>> getContactPersonByCompanyContainsIgnoreCase(String companyName) {
-        return contactPersonRepositoryAsync.getContactPersonByCompanyContainsIgnoreCase(companyName);
+        return CONTACT_PERSON_REPOSITORY_ASYNC.getContactPersonByCompanyContainsIgnoreCase(companyName);
     }
 
     @Override
     public CompletionStage<List<ContactPerson>> getContactPersonByProjectContainsIgnoreCase(String projectName) {
-        return contactPersonRepositoryAsync.getContactPersonByProjectContainsIgnoreCase(projectName);
+        return CONTACT_PERSON_REPOSITORY_ASYNC.getContactPersonByProjectContainsIgnoreCase(projectName);
     }
 }

@@ -14,57 +14,57 @@ import java.util.concurrent.Executor;
 @Repository
 public class ProjectRepositoryAsync {
 
-    private final ProjectRepository projectRepository;
-    private final Executor executor;
+    private final ProjectRepository PROJECT_REPOSITORY;
+    private final Executor EXECUTOR;
     @PersistenceContext
-    private final EntityManager entityManager;
+    private final EntityManager ENTITY_MANAGER;
 
-    public ProjectRepositoryAsync(ProjectRepository projectRepository, Executor executor, EntityManager entityManager) {
-        this.projectRepository = projectRepository;
-        this.executor = executor;
-        this.entityManager = entityManager;
+    public ProjectRepositoryAsync(ProjectRepository PROJECT_REPOSITORY, Executor EXECUTOR, EntityManager ENTITY_MANAGER) {
+        this.PROJECT_REPOSITORY = PROJECT_REPOSITORY;
+        this.EXECUTOR = EXECUTOR;
+        this.ENTITY_MANAGER = ENTITY_MANAGER;
     }
 
     public CompletionStage<Project> insertProject(Project project) {
-        return CompletableFuture.supplyAsync(() -> projectRepository.save(project), executor);
+        return CompletableFuture.supplyAsync(() -> PROJECT_REPOSITORY.save(project), EXECUTOR);
     }
 
     public CompletionStage<Project> getProjectById(String projectId) {
-        return CompletableFuture.supplyAsync(() -> projectRepository.getById(projectId), executor);
+        return CompletableFuture.supplyAsync(() -> PROJECT_REPOSITORY.getById(projectId), EXECUTOR);
     }
 
     public CompletionStage<List<Project>> getAllProjects() {
-        return CompletableFuture.supplyAsync(() -> projectRepository.findAll(), executor);
+        return CompletableFuture.supplyAsync(() -> PROJECT_REPOSITORY.findAll(), EXECUTOR);
     }
 
     public CompletionStage<Option<Void>> deleteProject(Project project) {
         return CompletableFuture.supplyAsync(() -> {
-            projectRepository.delete(project);
+            PROJECT_REPOSITORY.delete(project);
             return null;
-        }, executor);
+        }, EXECUTOR);
     }
 
     public CompletionStage<Project> updateProject(Project project) {
-        return CompletableFuture.supplyAsync(() -> entityManager.merge(project), executor);
+        return CompletableFuture.supplyAsync(() -> ENTITY_MANAGER.merge(project), EXECUTOR);
     }
 
     public CompletionStage<Project> getProjectByNameContainsIgnoreCase(String projectName) {
-        return CompletableFuture.supplyAsync(() -> projectRepository.getProjectByNameContainsIgnoreCase(projectName), executor);
+        return CompletableFuture.supplyAsync(() -> PROJECT_REPOSITORY.getProjectByNameContainsIgnoreCase(projectName), EXECUTOR);
     }
 
     public CompletionStage<Project> getProjectByAddressContainsIgnoreCase(String projectAddress) {
-        return CompletableFuture.supplyAsync(() -> projectRepository.getProjectByAddressContainsIgnoreCase(projectAddress), executor);
+        return CompletableFuture.supplyAsync(() -> PROJECT_REPOSITORY.getProjectByAddressContainsIgnoreCase(projectAddress), EXECUTOR);
     }
 
     public CompletionStage<List<Project>> getProjectByCompanyContainsIgnoreCase(String companyName) {
-        return CompletableFuture.supplyAsync(() -> projectRepository.getProjectByCompanyContainsIgnoreCase(companyName), executor);
+        return CompletableFuture.supplyAsync(() -> PROJECT_REPOSITORY.getProjectByCompanyContainsIgnoreCase(companyName), EXECUTOR);
     }
 
     public CompletionStage<List<Project>> getProjectByProjectManagerContainsIgnoreCase(String projectManagerName) {
-        return CompletableFuture.supplyAsync(() -> projectRepository.getProjectByProjectManagerContainsIgnoreCase(projectManagerName), executor);
+        return CompletableFuture.supplyAsync(() -> PROJECT_REPOSITORY.getProjectByProjectManagerContainsIgnoreCase(projectManagerName), EXECUTOR);
     }
 
     public CompletionStage<List<Project>> getProjectByContactPersonContainsIgnoreCase(String contactPersonName) {
-        return CompletableFuture.supplyAsync(() -> projectRepository.getProjectByContactPersonContainsIgnoreCase(contactPersonName), executor);
+        return CompletableFuture.supplyAsync(() -> PROJECT_REPOSITORY.getProjectByContactPersonContainsIgnoreCase(contactPersonName), EXECUTOR);
     }
 }

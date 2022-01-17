@@ -20,24 +20,24 @@ import java.util.stream.Collectors;
 @RequestMapping("/v1/contactPerson")
 public class ContactPersonResource {
 
-    private static final Logger logger = LoggerFactory.getLogger(ContactPerson.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContactPerson.class);
 
-    private final ContactPersonServiceImpl contactPersonServiceImpl;
-    private final EntityDtoMapper converter;
+    private final ContactPersonServiceImpl CONTACT_PERSON_SERVICE_IMPL;
+    private final EntityDtoMapper CONVERTER;
 
     @Autowired
-    public ContactPersonResource(ContactPersonServiceImpl contactPersonServiceImpl, EntityDtoMapper converter) {
-        this.contactPersonServiceImpl = contactPersonServiceImpl;
-        this.converter = converter;
+    public ContactPersonResource(ContactPersonServiceImpl CONTACT_PERSON_SERVICE_IMPL, EntityDtoMapper CONVERTER) {
+        this.CONTACT_PERSON_SERVICE_IMPL = CONTACT_PERSON_SERVICE_IMPL;
+        this.CONVERTER = CONVERTER;
     }
 
     @RequestMapping(produces = "application/json", value = "/create", method = RequestMethod.POST)
     //@ApiOperation(value = "Insert contact person instance", response = ContactPersonDto.class)
     public CompletionStage<ResponseEntity<Result<String>>> create(@RequestBody ContactPersonDto contactPersonDto) {
-        return contactPersonServiceImpl.insertContactPerson(converter.toContactPerson(contactPersonDto))
+        return CONTACT_PERSON_SERVICE_IMPL.insertContactPerson(CONVERTER.toContactPerson(contactPersonDto))
                 .thenApply(project -> Responses.ok(""))
                 .exceptionally(throwable -> {
-                    logger.error("Failed to insert contact person = {}", contactPersonDto, throwable);
+                    LOGGER.error("Failed to insert contact person = {}", contactPersonDto, throwable);
                     return Responses.internalServerError();
                 });
     }
@@ -45,12 +45,12 @@ public class ContactPersonResource {
     @RequestMapping(produces = "application/json", value = "/getById", method = RequestMethod.POST)
     //@ApiOperation(value = "Gets contact person instance by id", response = ContactPersonDto.class)
     public CompletionStage<ResponseEntity<Result<ContactPersonDto>>> getContactPersonById(@RequestParam String contactPersonId) {
-        return contactPersonServiceImpl.getContactPersonById(contactPersonId)
+        return CONTACT_PERSON_SERVICE_IMPL.getContactPersonById(contactPersonId)
                 .thenApply(contactPerson -> {
-                    ContactPersonDto contactPersonDto = converter.toContactPersonDto(contactPerson);
+                    ContactPersonDto contactPersonDto = CONVERTER.toContactPersonDto(contactPerson);
                     return Responses.ok(contactPersonDto);
                 }).exceptionally(throwable -> {
-                    logger.error("Failed to get contact person = {}", contactPersonId, throwable);
+                    LOGGER.error("Failed to get contact person = {}", contactPersonId, throwable);
                     return Responses.internalServerError();
                 });
     }
@@ -58,13 +58,13 @@ public class ContactPersonResource {
     @RequestMapping(produces = "application/json", value = "/getAll", method = RequestMethod.GET)
     //@ApiOperation(value = "Gets all contact person instances", response = ContactPersonDto.class)
     public CompletionStage<ResponseEntity<Result<List<ContactPersonDto>>>> getAllContactPerson() {
-        return contactPersonServiceImpl.getAllContactPerson().thenApply(contactPerson -> {
+        return CONTACT_PERSON_SERVICE_IMPL.getAllContactPerson().thenApply(contactPerson -> {
             List<ContactPersonDto> contactPersonDtoList = contactPerson.stream()
-                    .map(converter::toContactPersonDto)
+                    .map(CONVERTER::toContactPersonDto)
                     .collect(Collectors.toList());
             return Responses.ok(contactPersonDtoList);
         }).exceptionally(throwable -> {
-            logger.error("Failed to get contact people = {}", throwable);
+            LOGGER.error("Failed to get contact people = {}", throwable);
             return Responses.internalServerError();
         });
     }
@@ -72,10 +72,10 @@ public class ContactPersonResource {
     @RequestMapping(produces = "application/json", value = "/update", method = RequestMethod.PUT)
     //@ApiOperation(value = "Updates contact person instance", response = ContactPersonDto.class)
     public CompletionStage<ResponseEntity<Result<String>>> updateContactPerson(@RequestBody ContactPersonDto contactPersonDto) {
-        return contactPersonServiceImpl.updateContactPerson(converter.toContactPerson(contactPersonDto))
+        return CONTACT_PERSON_SERVICE_IMPL.updateContactPerson(CONVERTER.toContactPerson(contactPersonDto))
                 .thenApply(company -> Responses.ok(""))
                 .exceptionally(throwable -> {
-                    logger.error("Failed to update contact person = {}", contactPersonDto, throwable);
+                    LOGGER.error("Failed to update contact person = {}", contactPersonDto, throwable);
                     return Responses.internalServerError();
                 });
     }
@@ -83,10 +83,10 @@ public class ContactPersonResource {
     @RequestMapping(produces = "application/json", value = "/delete", method = RequestMethod.DELETE)
     //@ApiOperation(value = "Deletes contact person instance", response = ContactPersonDto.class)
     public CompletionStage<ResponseEntity<Result<Void>>> deleteContactPerson(@RequestBody ContactPersonDto contactPersonDto) {
-        return contactPersonServiceImpl.deleteContactPerson(converter.toContactPerson(contactPersonDto))
+        return CONTACT_PERSON_SERVICE_IMPL.deleteContactPerson(CONVERTER.toContactPerson(contactPersonDto))
                 .thenApply(Responses::ok)
                 .exceptionally(throwable -> {
-                    logger.error("Failed to delete contact person = {}", contactPersonDto, throwable);
+                    LOGGER.error("Failed to delete contact person = {}", contactPersonDto, throwable);
                     return Responses.internalServerError();
                 });
     }
@@ -94,12 +94,12 @@ public class ContactPersonResource {
     @RequestMapping(produces = "application/json", value = "/getByName", method = RequestMethod.GET)
     //@ApiOperation(value = "Gets contact person instance by name", response = ContactPersonDto.class)
     public CompletionStage<ResponseEntity<Result<ContactPersonDto>>> getContactPersonByNameContainsIgnoreCase(@RequestParam String contactPersonName) {
-        return contactPersonServiceImpl.getContactPersonByNameContainsIgnoreCase(contactPersonName)
+        return CONTACT_PERSON_SERVICE_IMPL.getContactPersonByNameContainsIgnoreCase(contactPersonName)
                 .thenApply(contactPerson -> {
-                    ContactPersonDto contactPersonDto = converter.toContactPersonDto(contactPerson);
+                    ContactPersonDto contactPersonDto = CONVERTER.toContactPersonDto(contactPerson);
                     return Responses.ok(contactPersonDto);
                 }).exceptionally(throwable -> {
-                    logger.error("Failed to get company = {}", contactPersonName, throwable);
+                    LOGGER.error("Failed to get company = {}", contactPersonName, throwable);
                     return Responses.internalServerError();
                 });
     }
@@ -107,14 +107,14 @@ public class ContactPersonResource {
     @RequestMapping(produces = "application/json", value = "/getByCompany", method = RequestMethod.GET)
     //@ApiOperation(value = "Gets contact person instance by company", response = ContactPersonDto.class)
     public CompletionStage<ResponseEntity<Result<List<ContactPersonDto>>>> getContactPersonByCompanyContainsIgnoreCase(@RequestParam String companyName) {
-        return contactPersonServiceImpl.getContactPersonByCompanyContainsIgnoreCase(companyName)
+        return CONTACT_PERSON_SERVICE_IMPL.getContactPersonByCompanyContainsIgnoreCase(companyName)
                 .thenApply(contactPersonList -> {
                     List<ContactPersonDto> contactPersonDtoList = contactPersonList.stream()
-                            .map(converter::toContactPersonDto)
+                            .map(CONVERTER::toContactPersonDto)
                             .collect(Collectors.toList());
                     return Responses.ok(contactPersonDtoList);
                 }).exceptionally(throwable -> {
-                    logger.error("Failed to get project = {}", companyName, throwable);
+                    LOGGER.error("Failed to get project = {}", companyName, throwable);
                     return Responses.internalServerError();
                 });
     }
@@ -122,14 +122,14 @@ public class ContactPersonResource {
     @RequestMapping(produces = "application/json", value = "/getByProject", method = RequestMethod.GET)
     //@ApiOperation(value = "Gets contact person instance by project", response = ContactPersonDto.class)
     public CompletionStage<ResponseEntity<Result<List<ContactPersonDto>>>> getContactPersonByProjectContainsIgnoreCase(@RequestParam String projectName) {
-        return contactPersonServiceImpl.getContactPersonByProjectContainsIgnoreCase(projectName)
+        return CONTACT_PERSON_SERVICE_IMPL.getContactPersonByProjectContainsIgnoreCase(projectName)
                 .thenApply(contactPersonList -> {
                     List<ContactPersonDto> contactPersonDtoList = contactPersonList.stream()
-                            .map(converter::toContactPersonDto)
+                            .map(CONVERTER::toContactPersonDto)
                             .collect(Collectors.toList());
                     return Responses.ok(contactPersonDtoList);
                 }).exceptionally(throwable -> {
-                    logger.error("Failed to get project = {}", projectName, throwable);
+                    LOGGER.error("Failed to get project = {}", projectName, throwable);
                     return Responses.internalServerError();
                 });
     }

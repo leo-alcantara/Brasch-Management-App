@@ -1,7 +1,6 @@
 package the.bug.tech.brasch_management_system.model;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 
 import javax.persistence.*;
 import java.util.List;

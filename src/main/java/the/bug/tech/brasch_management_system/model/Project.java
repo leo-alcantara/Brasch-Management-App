@@ -72,12 +72,14 @@ public class Project {
     }
 
     //Convenience Methods (ContactPerson, ProjectManager)
-    public boolean addContactPerson(ContactPerson contactPerson) {
-        return contactPersonList.add(contactPerson);
+    public void addContactPerson(ContactPerson contactPerson) {
+        contactPersonList.add(contactPerson);
+        contactPerson.getProjectList().add(this);
     }
 
-    public boolean removeContactPerson(ContactPerson contactPerson) {
-        return contactPersonList.remove(contactPerson);
+    public void removeContactPerson(ContactPerson contactPerson) {
+        contactPersonList.remove(contactPerson);
+        contactPerson.getProjectList().remove(this);
     }
 
     public void addProjectManager(ProjectManager projectManager) {

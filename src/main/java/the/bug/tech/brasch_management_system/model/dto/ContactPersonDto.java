@@ -16,7 +16,7 @@ public class ContactPersonDto {
     private List<Project> projectList;
 
     @JsonCreator
-    public ContactPersonDto(@JsonProperty("contactPersonPerson")Person contactPersonPerson,
+    public ContactPersonDto(@JsonProperty("contactPersonPerson") Person contactPersonPerson,
                             @JsonProperty("company") Company company,
                             @JsonProperty("projectList") List<Project> projectList) {
         this.contactPersonPerson = contactPersonPerson;

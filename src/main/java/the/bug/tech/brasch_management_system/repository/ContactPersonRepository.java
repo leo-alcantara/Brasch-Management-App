@@ -1,6 +1,5 @@
 package the.bug.tech.brasch_management_system.repository;
 
-import io.vavr.control.Option;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,8 +19,6 @@ public interface ContactPersonRepository extends JpaRepository<ContactPerson, St
 
     @Query("SELECT cp FROM ContactPerson cp JOIN FETCH cp.projectList AS p WHERE UPPER(p.projectName) LIKE UPPER(CONCAT('%', :projectName, '%'))")
     List<ContactPerson> getContactPersonByProjectContainsIgnoreCase(@Param("projectName") String projectName);
-
-
 
 
 }

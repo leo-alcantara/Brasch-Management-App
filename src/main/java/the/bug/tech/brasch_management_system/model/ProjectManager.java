@@ -23,7 +23,7 @@ public class ProjectManager {
             CascadeType.MERGE,
             CascadeType.REFRESH},
             fetch = FetchType.LAZY,
-    mappedBy = "projectManager")
+            mappedBy = "projectManager")
     private List<Project> projectList;
 
     public ProjectManager() {

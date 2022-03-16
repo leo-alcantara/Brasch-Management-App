@@ -9,7 +9,7 @@ public interface CompanyService {
 
     CompletionStage<Company> insertCompany(Company company);
 
-    CompletionStage<Company> getCompanyById(String companyId);
+    CompletionStage<Company> getCompanyById(Integer companyId);
 
     CompletionStage<List<Company>> getAllCompanies();
 
@@ -17,9 +17,9 @@ public interface CompanyService {
 
     CompletionStage<Void> deleteCompany(Company company);
 
-    CompletionStage<Company> getCompanyByCompanyNameContainsIgnoreCase(String companyName);
+    CompletionStage<List<Company>> getCompanyByCompanyNameContainsIgnoreCase(String companyName);
 
-    CompletionStage<Company> getCompanyByProjectNameContainsIgnoreCase(String projectName);
+    CompletionStage<List<Company>> getCompanyByProjectNameContainsIgnoreCase(String projectName);
 
-    CompletionStage<Company> getCompanyByContactPersonContainsIgnoreCase(String name);
+    CompletionStage<List<Company>> getCompanyByContactPersonContainsIgnoreCase(String name);
 }

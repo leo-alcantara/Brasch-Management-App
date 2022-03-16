@@ -12,53 +12,53 @@ import java.util.concurrent.CompletionStage;
 @Service
 public class ContactPersonServiceImpl implements ContactPersonService {
 
-    private ContactPersonRepositoryAsync CONTACT_PERSON_REPOSITORY_ASYNC;
+    private ContactPersonRepositoryAsync contactPersonRepositoryAsync;
 
     @Autowired
-    public ContactPersonServiceImpl(ContactPersonRepositoryAsync CONTACT_PERSON_REPOSITORY_ASYNC) {
-        this.CONTACT_PERSON_REPOSITORY_ASYNC = CONTACT_PERSON_REPOSITORY_ASYNC;
+    public ContactPersonServiceImpl(ContactPersonRepositoryAsync contactPersonRepositoryAsync) {
+        this.contactPersonRepositoryAsync = contactPersonRepositoryAsync;
     }
 
     @Override
     @Transactional
     public CompletionStage<ContactPerson> insertContactPerson(ContactPerson contactPerson) {
-        return CONTACT_PERSON_REPOSITORY_ASYNC.insertContactPerson(contactPerson);
+        return contactPersonRepositoryAsync.insertContactPerson(contactPerson);
     }
 
     @Override
-    public CompletionStage<ContactPerson> getContactPersonById(String contactPersonId) {
-        return CONTACT_PERSON_REPOSITORY_ASYNC.getContactPersonById(contactPersonId);
+    public CompletionStage<ContactPerson> getContactPersonById(Integer contactPersonId) {
+        return contactPersonRepositoryAsync.getContactPersonById(contactPersonId);
     }
 
     @Override
     public CompletionStage<List<ContactPerson>> getAllContactPerson() {
-        return CONTACT_PERSON_REPOSITORY_ASYNC.getAllContactPerson();
+        return contactPersonRepositoryAsync.getAllContactPerson();
     }
 
     @Override
     @Transactional
     public CompletionStage<ContactPerson> updateContactPerson(ContactPerson contactPerson) {
-        return CONTACT_PERSON_REPOSITORY_ASYNC.updateContactPerson(contactPerson);
+        return contactPersonRepositoryAsync.updateContactPerson(contactPerson);
     }
 
     @Override
     @Transactional
     public CompletionStage<Void> deleteContactPerson(ContactPerson contactPerson) {
-        return CONTACT_PERSON_REPOSITORY_ASYNC.deleteContactPerson(contactPerson);
+        return contactPersonRepositoryAsync.deleteContactPerson(contactPerson);
     }
 
     @Override
-    public CompletionStage<ContactPerson> getContactPersonByNameContainsIgnoreCase(String contactPersonName) {
-        return CONTACT_PERSON_REPOSITORY_ASYNC.getContactPersonByNameContainsIgnoreCase(contactPersonName);
+    public CompletionStage<List<ContactPerson>> getContactPersonByNameContainsIgnoreCase(String contactPersonName) {
+        return contactPersonRepositoryAsync.getContactPersonByNameContainsIgnoreCase(contactPersonName);
     }
 
     @Override
     public CompletionStage<List<ContactPerson>> getContactPersonByCompanyContainsIgnoreCase(String companyName) {
-        return CONTACT_PERSON_REPOSITORY_ASYNC.getContactPersonByCompanyContainsIgnoreCase(companyName);
+        return contactPersonRepositoryAsync.getContactPersonByCompanyContainsIgnoreCase(companyName);
     }
 
     @Override
     public CompletionStage<List<ContactPerson>> getContactPersonByProjectContainsIgnoreCase(String projectName) {
-        return CONTACT_PERSON_REPOSITORY_ASYNC.getContactPersonByProjectContainsIgnoreCase(projectName);
+        return contactPersonRepositoryAsync.getContactPersonByProjectContainsIgnoreCase(projectName);
     }
 }

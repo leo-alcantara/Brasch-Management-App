@@ -1,6 +1,5 @@
 package the.bug.tech.brasch_management_system.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -9,13 +8,13 @@ import the.bug.tech.brasch_management_system.model.Project;
 import java.util.List;
 
 @Repository
-public interface ProjectRepository extends JpaRepository<Project, String> {
+public interface ProjectRepository extends GenericCRUDMethods<Project, Integer> {
 
     @Query("SELECT p FROM Project p WHERE UPPER(p.projectName) LIKE UPPER(CONCAT('%', :projectName, '%'))")
-    Project getProjectByNameContainsIgnoreCase(@Param("projectName") String projectName);
+    List<Project> getProjectByNameContainsIgnoreCase(@Param("projectName") String projectName);
 
     @Query("SELECT p FROM Project p WHERE UPPER(p.projectName) LIKE UPPER(CONCAT('%', :projectAddress, '%'))")
-    Project getProjectByAddressContainsIgnoreCase(@Param("projectAddress") String projectAddress);
+    List<Project> getProjectByAddressContainsIgnoreCase(@Param("projectAddress") String projectAddress);
 
     @Query("SELECT p FROM Project p JOIN FETCH p.company AS c WHERE UPPER(c.companyName) LIKE UPPER(concat('%', :companyName, '%'))")
     List<Project> getProjectByCompanyContainsIgnoreCase(@Param("companyName") String companyName);

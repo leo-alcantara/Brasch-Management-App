@@ -2,9 +2,6 @@ package the.bug.tech.brasch_management_system.util;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import the.bug.tech.brasch_management_system.dto.Result;
-import the.bug.tech.brasch_management_system.dto.Results;
-import the.bug.tech.brasch_management_system.dto.Success;
 
 public class Responses {
 

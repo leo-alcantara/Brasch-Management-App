@@ -1,4 +1,4 @@
-package the.bug.tech.brasch_management_system.dto;
+package the.bug.tech.brasch_management_system.util;
 
 public class Success<T> implements Result<T> {
 

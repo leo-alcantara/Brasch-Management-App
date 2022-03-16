@@ -1,9 +1,10 @@
 package the.bug.tech.brasch_management_system.model;
 
-import org.hibernate.annotations.GenericGenerator;
+import io.vavr.control.Try;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,9 +12,8 @@ import java.util.Objects;
 public class Project {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private String projectId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer projectId;
     private String projectName;
     private String projectDescription;
     private String projectLocal;
@@ -90,11 +90,11 @@ public class Project {
         setProjectManager(null);
     }
 
-    public String getProjectId() {
+    public Integer getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(String projectId) {
+    public void setProjectId(Integer projectId) {
         this.projectId = projectId;
     }
 
@@ -197,5 +197,26 @@ public class Project {
                 ", projectManager=" + projectManager +
                 ", contactPerson=" + contactPersonList +
                 '}';
+    }
+
+    public enum Status {
+
+        HAS_NOT_STARTED("Has not started"),
+        IN_PROGRESS("In Progress"),
+        COMPLETED("Completed"),
+        CANCELLED("Cancelled");
+
+        public final String value;
+
+        Status(String value) {
+            this.value = value;
+        }
+
+        public static Status fromValue(String value) {
+            return Try.of(() -> Arrays.stream(values())
+                            .filter(v -> v.value.equals(value))
+                            .findFirst().get())
+                    .getOrElseThrow(() -> new IllegalArgumentException("Failed to parse attribute type"));
+        }
     }
 }

@@ -9,7 +9,7 @@ public interface ProjectManagerService {
 
     CompletionStage<ProjectManager> insertProjectManager(ProjectManager projectManager);
 
-    CompletionStage<ProjectManager> getProjectManagerById(String projectManagerId);
+    CompletionStage<ProjectManager> getProjectManagerById(Integer projectManagerId);
 
     CompletionStage<List<ProjectManager>> getAllProjectManager();
 
@@ -17,7 +17,7 @@ public interface ProjectManagerService {
 
     CompletionStage<Void> deleteProjectManager(ProjectManager projectManager);
 
-    CompletionStage<ProjectManager> getProjectManagerByNameContainsIgnoreCase(String projectManagerName);
+    CompletionStage<List<ProjectManager>> getProjectManagerByNameContainsIgnoreCase(String projectManagerName);
 
-    CompletionStage<ProjectManager> getProjectManagerByProjectContainsIgnoreCase(String projectName);
+    CompletionStage<List<ProjectManager>> getProjectManagerByProjectContainsIgnoreCase(String projectName);
 }

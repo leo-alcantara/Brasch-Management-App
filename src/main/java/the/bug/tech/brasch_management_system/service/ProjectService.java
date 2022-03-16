@@ -10,17 +10,17 @@ public interface ProjectService {
 
     CompletionStage<Project> insertProject(Project project);
 
-    CompletionStage<Project> getProjectById(String projectId);
+    CompletionStage<Project> getProjectById(Integer projectId);
 
     CompletionStage<List<Project>> getAllProject();
 
     CompletionStage<Project> updateProject(Project project);
 
-    CompletionStage<Option<Void>> deleteProject(Project project);
+    CompletionStage<Void> deleteProject(Project project);
 
-    CompletionStage<Project> getProjectByNameContainsIgnoreCase(String projectName);
+    CompletionStage<List<Project>> getProjectByNameContainsIgnoreCase(String projectName);
 
-    CompletionStage<Project> getProjectByAddressContainsIgnoreCase(String projectAddress);
+    CompletionStage<List<Project>> getProjectByAddressContainsIgnoreCase(String projectAddress);
 
     CompletionStage<List<Project>> getProjectByCompanyContainsIgnoreCase(String companyName);
 

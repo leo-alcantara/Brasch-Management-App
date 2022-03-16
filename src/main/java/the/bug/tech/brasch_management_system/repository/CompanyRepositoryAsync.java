@@ -13,49 +13,44 @@ import java.util.concurrent.Executor;
 @Repository
 public class CompanyRepositoryAsync {
 
-    private final CompanyRepository COMPANY_REPOSITORY;
-    private final Executor EXECUTOR;
-    @PersistenceContext
-    private final EntityManager ENTITY_MANAGER;
+    private final CompanyRepository companyRepository;
+    private final Executor executor;
 
-    public CompanyRepositoryAsync(CompanyRepository COMPANY_REPOSITORY, Executor EXECUTOR, EntityManager ENTITY_MANAGER) {
-        this.COMPANY_REPOSITORY = COMPANY_REPOSITORY;
-        this.EXECUTOR = EXECUTOR;
-        this.ENTITY_MANAGER = ENTITY_MANAGER;
+    public CompanyRepositoryAsync(CompanyRepository companyRepository, Executor executor) {
+        this.companyRepository = companyRepository;
+        this.executor = executor;
     }
 
     public CompletionStage<Company> insertCompany(Company company) {
-        return CompletableFuture.supplyAsync(() -> COMPANY_REPOSITORY.save(company), EXECUTOR);
+        return CompletableFuture.supplyAsync(() -> companyRepository.create(company), executor);
     }
 
-    public CompletionStage<Company> getCompanyById(String companyId) {
-        return CompletableFuture.supplyAsync(() -> COMPANY_REPOSITORY.getById(companyId), EXECUTOR);
+    public CompletionStage<Company> getCompanyById(Integer companyId) {
+        return CompletableFuture.supplyAsync(() -> companyRepository.findById(companyId), executor);
     }
 
     public CompletionStage<List<Company>> getAllCompanies() {
-        return CompletableFuture.supplyAsync(() -> COMPANY_REPOSITORY.findAll(), EXECUTOR);
+        return CompletableFuture.supplyAsync(() -> companyRepository.findAll(), executor);
     }
 
     public CompletionStage<Void> deleteCompany(Company company) {
-        return CompletableFuture.supplyAsync(() -> {
-            COMPANY_REPOSITORY.delete(company);
-            return null;
-        }, EXECUTOR);
+        return CompletableFuture.runAsync(() ->
+            companyRepository.delete(company), executor);
     }
 
     public CompletionStage<Company> updateCompany(Company company) {
-        return CompletableFuture.supplyAsync(() -> ENTITY_MANAGER.merge(company), EXECUTOR);
+        return CompletableFuture.supplyAsync(() -> companyRepository.update(company), executor);
     }
 
-    public CompletionStage<Company> getCompanyByCompanyNameContainsIgnoreCase(String companyName) {
-        return CompletableFuture.supplyAsync(() -> COMPANY_REPOSITORY.getCompanyByCompanyNameContainsIgnoreCase(companyName), EXECUTOR);
+    public CompletionStage<List<Company>> getCompanyByCompanyNameContainsIgnoreCase(String companyName) {
+        return CompletableFuture.supplyAsync(() -> companyRepository.getCompanyByCompanyNameContainsIgnoreCase(companyName), executor);
     }
 
-    public CompletionStage<Company> getCompanyByProjectNameContainsIgnoreCase(String projectName) {
-        return CompletableFuture.supplyAsync(() -> COMPANY_REPOSITORY.getCompanyByProjectNameContainsIgnoreCase(projectName), EXECUTOR);
+    public CompletionStage<List<Company>> getCompanyByProjectNameContainsIgnoreCase(String projectName) {
+        return CompletableFuture.supplyAsync(() -> companyRepository.getCompanyByProjectNameContainsIgnoreCase(projectName), executor);
     }
 
-    public CompletionStage<Company> getCompanyByContactPersonContainsIgnoreCase(String contactPersonName) {
-        return CompletableFuture.supplyAsync(() -> COMPANY_REPOSITORY.getCompanyByContactPersonContainsIgnoreCase(contactPersonName), EXECUTOR);
+    public CompletionStage<List<Company>> getCompanyByContactPersonContainsIgnoreCase(String contactPersonName) {
+        return CompletableFuture.supplyAsync(() -> companyRepository.getCompanyByContactPersonContainsIgnoreCase(contactPersonName), executor);
     }
 }

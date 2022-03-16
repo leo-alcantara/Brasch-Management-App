@@ -13,49 +13,44 @@ import java.util.concurrent.Executor;
 @Repository
 public class ContactPersonRepositoryAsync {
 
-    private final ContactPersonRepository CONTACT_PERSON_REPOSITORY;
-    private final Executor EXECUTOR;
-    @PersistenceContext
-    private final EntityManager ENTITY_MANAGER;
+    private final ContactPersonRepository contactPersonRepository;
+    private final Executor executor;
 
-    public ContactPersonRepositoryAsync(ContactPersonRepository CONTACT_PERSON_REPOSITORY, Executor EXECUTOR, EntityManager ENTITY_MANAGER) {
-        this.CONTACT_PERSON_REPOSITORY = CONTACT_PERSON_REPOSITORY;
-        this.EXECUTOR = EXECUTOR;
-        this.ENTITY_MANAGER = ENTITY_MANAGER;
+    public ContactPersonRepositoryAsync(ContactPersonRepository contactPersonRepository, Executor executor) {
+        this.contactPersonRepository = contactPersonRepository;
+        this.executor = executor;
     }
 
     public CompletionStage<ContactPerson> insertContactPerson(ContactPerson contactPerson) {
-        return CompletableFuture.supplyAsync(() -> CONTACT_PERSON_REPOSITORY.save(contactPerson), EXECUTOR);
+        return CompletableFuture.supplyAsync(() -> contactPersonRepository.create(contactPerson), executor);
     }
 
-    public CompletionStage<ContactPerson> getContactPersonById(String contactPersonId) {
-        return CompletableFuture.supplyAsync(() -> CONTACT_PERSON_REPOSITORY.getById(contactPersonId), EXECUTOR);
+    public CompletionStage<ContactPerson> getContactPersonById(Integer contactPersonId) {
+        return CompletableFuture.supplyAsync(() -> contactPersonRepository.findById(contactPersonId), executor);
     }
 
     public CompletionStage<List<ContactPerson>> getAllContactPerson() {
-        return CompletableFuture.supplyAsync(() -> CONTACT_PERSON_REPOSITORY.findAll(), EXECUTOR);
+        return CompletableFuture.supplyAsync(() -> contactPersonRepository.findAll(), executor);
     }
 
     public CompletionStage<Void> deleteContactPerson(ContactPerson contactPerson) {
-        return CompletableFuture.supplyAsync(() -> {
-            CONTACT_PERSON_REPOSITORY.delete(contactPerson);
-            return null;
-        }, EXECUTOR);
+        return CompletableFuture.runAsync(() ->
+            contactPersonRepository.delete(contactPerson), executor);
     }
 
     public CompletionStage<ContactPerson> updateContactPerson(ContactPerson contactPerson) {
-        return CompletableFuture.supplyAsync(() -> ENTITY_MANAGER.merge(contactPerson), EXECUTOR);
+        return CompletableFuture.supplyAsync(() -> contactPersonRepository.update(contactPerson), executor);
     }
 
-    public CompletionStage<ContactPerson> getContactPersonByNameContainsIgnoreCase(String contactPersonName) {
-        return CompletableFuture.supplyAsync(() -> CONTACT_PERSON_REPOSITORY.getContactPersonByNameContainsIgnoreCase(contactPersonName), EXECUTOR);
+    public CompletionStage<List<ContactPerson>> getContactPersonByNameContainsIgnoreCase(String contactPersonName) {
+        return CompletableFuture.supplyAsync(() -> contactPersonRepository.getContactPersonByNameContainsIgnoreCase(contactPersonName), executor);
     }
 
     public CompletionStage<List<ContactPerson>> getContactPersonByCompanyContainsIgnoreCase(String companyName) {
-        return CompletableFuture.supplyAsync(() -> CONTACT_PERSON_REPOSITORY.getContactPersonByCompanyContainsIgnoreCase(companyName), EXECUTOR);
+        return CompletableFuture.supplyAsync(() -> contactPersonRepository.getContactPersonByCompanyContainsIgnoreCase(companyName), executor);
     }
 
     public CompletionStage<List<ContactPerson>> getContactPersonByProjectContainsIgnoreCase(String projectName) {
-        return CompletableFuture.supplyAsync(() -> CONTACT_PERSON_REPOSITORY.getContactPersonByProjectContainsIgnoreCase(projectName), EXECUTOR);
+        return CompletableFuture.supplyAsync(() -> contactPersonRepository.getContactPersonByProjectContainsIgnoreCase(projectName), executor);
     }
 }

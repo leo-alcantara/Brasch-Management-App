@@ -13,46 +13,42 @@ import java.util.concurrent.Executor;
 @Repository
 public class ProjectManagerRepositoryAsync {
 
-    private final ProjectManagerRepository PROJECT_MANAGER_REPOSITORY;
-    private final Executor EXECUTOR;
-
+    private final ProjectManagerRepository projectManagerRepository;
+    private final Executor executor;
     @PersistenceContext
-    private final EntityManager ENTITY_MANAGER;
+    private final EntityManager entityManager;
 
-    public ProjectManagerRepositoryAsync(ProjectManagerRepository PROJECT_MANAGER_REPOSITORY, Executor EXECUTOR, EntityManager ENTITY_MANAGER) {
-        this.PROJECT_MANAGER_REPOSITORY = PROJECT_MANAGER_REPOSITORY;
-        this.EXECUTOR = EXECUTOR;
-        this.ENTITY_MANAGER = ENTITY_MANAGER;
+    public ProjectManagerRepositoryAsync(ProjectManagerRepository projectManagerRepository, Executor executor, EntityManager entityManager) {
+        this.projectManagerRepository = projectManagerRepository;
+        this.executor = executor;
+        this.entityManager = entityManager;
     }
 
     public CompletionStage<ProjectManager> insertProjectManager(ProjectManager projectManager) {
-        return CompletableFuture.supplyAsync(() -> PROJECT_MANAGER_REPOSITORY.save(projectManager), EXECUTOR);
+        return CompletableFuture.supplyAsync(() -> projectManagerRepository.create(projectManager), executor);
     }
 
-    public CompletionStage<ProjectManager> getProjectManagerById(String projectManagerId) {
-        return CompletableFuture.supplyAsync(() -> PROJECT_MANAGER_REPOSITORY.getById(projectManagerId), EXECUTOR);
+    public CompletionStage<ProjectManager> getProjectManagerById(Integer projectManagerId) {
+        return CompletableFuture.supplyAsync(() -> projectManagerRepository.findById(projectManagerId), executor);
     }
 
     public CompletionStage<List<ProjectManager>> getAllProjectManagers() {
-        return CompletableFuture.supplyAsync(() -> PROJECT_MANAGER_REPOSITORY.findAll(), EXECUTOR);
+        return CompletableFuture.supplyAsync(() -> projectManagerRepository.findAll(), executor);
     }
 
     public CompletionStage<Void> deleteProjectManager(ProjectManager projectManager) {
-        return CompletableFuture.supplyAsync(() -> {
-            PROJECT_MANAGER_REPOSITORY.delete(projectManager);
-            return null;
-        }, EXECUTOR);
+        return CompletableFuture.runAsync(() -> projectManagerRepository.delete(projectManager), executor);
     }
 
     public CompletionStage<ProjectManager> updateProjectManager(ProjectManager projectManager) {
-        return CompletableFuture.supplyAsync(() -> ENTITY_MANAGER.merge(projectManager), EXECUTOR);
+        return CompletableFuture.supplyAsync(() -> entityManager.merge(projectManager), executor);
     }
 
-    public CompletionStage<ProjectManager> getProjectManagerByNameContainsIgnoreCase(String projectManagerName) {
-        return CompletableFuture.supplyAsync(() -> PROJECT_MANAGER_REPOSITORY.getProjectManagerByNameContainsIgnoreCase(projectManagerName), EXECUTOR);
+    public CompletionStage<List<ProjectManager>> getProjectManagerByNameContainsIgnoreCase(String projectManagerName) {
+        return CompletableFuture.supplyAsync(() -> projectManagerRepository.getProjectManagerByNameContainsIgnoreCase(projectManagerName), executor);
     }
 
-    public CompletionStage<ProjectManager> getProjectManagerByProjectContainsIgnoreCase(String projectName) {
-        return CompletableFuture.supplyAsync(() -> PROJECT_MANAGER_REPOSITORY.getProjectManagerByProjectContainsIgnoreCase(projectName), EXECUTOR);
+    public CompletionStage<List<ProjectManager>> getProjectManagerByProjectContainsIgnoreCase(String projectName) {
+        return CompletableFuture.supplyAsync(() -> projectManagerRepository.getProjectManagerByProjectContainsIgnoreCase(projectName), executor);
     }
 }

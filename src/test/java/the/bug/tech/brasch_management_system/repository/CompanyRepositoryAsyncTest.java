@@ -2,34 +2,33 @@ package the.bug.tech.brasch_management_system.repository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import the.bug.tech.brasch_management_system.config.YMLConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
 import the.bug.tech.brasch_management_system.model.Company;
 import the.bug.tech.brasch_management_system.model.ContactPerson;
 import the.bug.tech.brasch_management_system.model.Person;
 import the.bug.tech.brasch_management_system.model.Project;
-import the.bug.tech.brasch_management_system.model.dto.CompanyDto;
 
-import static org.mockito.BDDMockito.given;
-
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@RunWith(SpringRunner.class)
-@ContextConfiguration(classes = YMLConfiguration.class)
-@ActiveProfiles("test")
+@SpringBootTest
+@AutoConfigureTestEntityManager
+@AutoConfigureTestDatabase
+@Transactional
 class CompanyRepositoryAsyncTest {
 
-    @Mock
+    @Autowired
     private CompanyRepositoryAsync companyRepositoryAsync;
+    @Autowired
+    private TestEntityManager testEntityManager;
 
     @BeforeEach
     void setUp() {
@@ -42,9 +41,9 @@ class CompanyRepositoryAsyncTest {
         ContactPerson cPOne = new ContactPerson(personTestOne, companyTest, projectListTest);
         contactListTest.add(cPOne);
         projectListTest.add(projectTest);
-        companyRepositoryAsync.insertCompany(companyTest);
-
-
+        testEntityManager.persist(personTestOne);
+        testEntityManager.persist(cPOne);
+        testEntityManager.persist(companyTest);
     }
 
     @Test
@@ -68,14 +67,13 @@ class CompanyRepositoryAsyncTest {
     }
 
     @Test
-    void getAllCompanies() {
+    void should_get_all_companies_and_save_as_list() {
         //Arrange
-        List<Company> companyListTest;
+        CompletionStage<U> companyListTest;
         //Act
-
-
+        companyListTest = companyRepositoryAsync.getAllCompanies();
         //Assert
-
+        assertNotNull(companyListTest);
     }
 
     @Test
@@ -88,6 +86,12 @@ class CompanyRepositoryAsyncTest {
 
     @Test
     void getCompanyByCompanyNameContainsIgnoreCase() {
+        CompletionStage<U> companyListTest = null;
+
+        companyListTest = companyRepositoryAsync.getCompanyByCompanyNameContainsIgnoreCase("Test");
+
+        assertNotNull(companyListTest);
+
     }
 
     @Test

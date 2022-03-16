@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import the.bug.tech.brasch_management_system.model.Company;
 import the.bug.tech.brasch_management_system.model.ContactPerson;
+import the.bug.tech.brasch_management_system.model.Project;
 import the.bug.tech.brasch_management_system.model.ProjectManager;
-import the.bug.tech.brasch_management_system.model.Status;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,7 +16,7 @@ public class ProjectDto {
     private String projectName;
     private String projectDescription;
     private String projectLocal;
-    private Status status;
+    private Project.Status status;
     private LocalDate projectedStartDate;
     private LocalDate projectedConclusionDate;
     private Company company;
@@ -27,7 +27,7 @@ public class ProjectDto {
     public ProjectDto(@JsonProperty("projectName") String projectName,
                       @JsonProperty("projectDescription") String projectDescription,
                       @JsonProperty("projectLocal") String projectLocal,
-                      @JsonProperty("status") Status status,
+                      @JsonProperty("status") Project.Status status,
                       @JsonProperty("projectedStartDate") LocalDate projectedStartDate,
                       @JsonProperty("projectedConclusionDate") LocalDate projectedConclusionDate,
                       @JsonProperty("company") Company company,
@@ -68,11 +68,11 @@ public class ProjectDto {
         this.projectLocal = projectLocal;
     }
 
-    public Status getStatus() {
+    public Project.Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(Project.Status status) {
         this.status = status;
     }
 

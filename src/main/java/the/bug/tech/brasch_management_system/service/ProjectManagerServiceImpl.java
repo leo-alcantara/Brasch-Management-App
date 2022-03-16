@@ -12,48 +12,48 @@ import java.util.concurrent.CompletionStage;
 @Service
 public class ProjectManagerServiceImpl implements ProjectManagerService {
 
-    private final ProjectManagerRepositoryAsync PROJECT_MANAGER_REPOSITORY_ASYNC;
+    private final ProjectManagerRepositoryAsync projectManagerRepositoryAsync;
 
     @Autowired
-    public ProjectManagerServiceImpl(ProjectManagerRepositoryAsync PROJECT_MANAGER_REPOSITORY_ASYNC) {
-        this.PROJECT_MANAGER_REPOSITORY_ASYNC = PROJECT_MANAGER_REPOSITORY_ASYNC;
+    public ProjectManagerServiceImpl(ProjectManagerRepositoryAsync projectManagerRepositoryAsync) {
+        this.projectManagerRepositoryAsync = projectManagerRepositoryAsync;
     }
 
     @Override
     @Transactional
     public CompletionStage<ProjectManager> insertProjectManager(ProjectManager projectManager) {
-        return PROJECT_MANAGER_REPOSITORY_ASYNC.insertProjectManager(projectManager);
+        return projectManagerRepositoryAsync.insertProjectManager(projectManager);
     }
 
     @Override
-    public CompletionStage<ProjectManager> getProjectManagerById(String projectManagerId) {
-        return PROJECT_MANAGER_REPOSITORY_ASYNC.getProjectManagerById(projectManagerId);
+    public CompletionStage<ProjectManager> getProjectManagerById(Integer projectManagerId) {
+        return projectManagerRepositoryAsync.getProjectManagerById(projectManagerId);
     }
 
     @Override
     public CompletionStage<List<ProjectManager>> getAllProjectManager() {
-        return PROJECT_MANAGER_REPOSITORY_ASYNC.getAllProjectManagers();
+        return projectManagerRepositoryAsync.getAllProjectManagers();
     }
 
     @Override
     @Transactional
     public CompletionStage<ProjectManager> updateProjectManager(ProjectManager projectManager) {
-        return PROJECT_MANAGER_REPOSITORY_ASYNC.updateProjectManager(projectManager);
+        return projectManagerRepositoryAsync.updateProjectManager(projectManager);
     }
 
     @Override
     @Transactional
     public CompletionStage<Void> deleteProjectManager(ProjectManager projectManager) {
-        return PROJECT_MANAGER_REPOSITORY_ASYNC.deleteProjectManager(projectManager);
+        return projectManagerRepositoryAsync.deleteProjectManager(projectManager);
     }
 
     @Override
-    public CompletionStage<ProjectManager> getProjectManagerByNameContainsIgnoreCase(String projectManagerName) {
-        return PROJECT_MANAGER_REPOSITORY_ASYNC.getProjectManagerByNameContainsIgnoreCase(projectManagerName);
+    public CompletionStage<List<ProjectManager>> getProjectManagerByNameContainsIgnoreCase(String projectManagerName) {
+        return projectManagerRepositoryAsync.getProjectManagerByNameContainsIgnoreCase(projectManagerName);
     }
 
     @Override
-    public CompletionStage<ProjectManager> getProjectManagerByProjectContainsIgnoreCase(String projectName) {
-        return PROJECT_MANAGER_REPOSITORY_ASYNC.getProjectManagerByProjectContainsIgnoreCase(projectName);
+    public CompletionStage<List<ProjectManager>> getProjectManagerByProjectContainsIgnoreCase(String projectName) {
+        return projectManagerRepositoryAsync.getProjectManagerByProjectContainsIgnoreCase(projectName);
     }
 }

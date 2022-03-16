@@ -9,7 +9,7 @@ public interface ContactPersonService {
 
     CompletionStage<ContactPerson> insertContactPerson(ContactPerson contactPerson);
 
-    CompletionStage<ContactPerson> getContactPersonById(String contactPersonId);
+    CompletionStage<ContactPerson> getContactPersonById(Integer contactPersonId);
 
     CompletionStage<List<ContactPerson>> getAllContactPerson();
 
@@ -17,7 +17,7 @@ public interface ContactPersonService {
 
     CompletionStage<Void> deleteContactPerson(ContactPerson contactPerson);
 
-    CompletionStage<ContactPerson> getContactPersonByNameContainsIgnoreCase(String contactPersonName);
+    CompletionStage<List<ContactPerson>> getContactPersonByNameContainsIgnoreCase(String contactPersonName);
 
     CompletionStage<List<ContactPerson>> getContactPersonByCompanyContainsIgnoreCase(String companyName);
 

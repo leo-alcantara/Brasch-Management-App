@@ -1,5 +1,7 @@
 package the.bug.tech.brasch_management_system.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.vavr.control.Try;
 
 import javax.persistence.*;
@@ -197,11 +199,17 @@ public class Project {
             this.value = value;
         }
 
+        @JsonCreator
         public static Status fromValue(String value) {
             return Try.of(() -> Arrays.stream(values())
                             .filter(v -> v.value.equals(value))
                             .findFirst().get())
                     .getOrElseThrow(() -> new IllegalArgumentException("Failed to parse attribute type"));
+        }
+
+        @JsonValue
+        public String toJson() {
+            return value;
         }
     }
 }

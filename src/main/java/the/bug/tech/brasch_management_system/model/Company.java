@@ -120,15 +120,5 @@ public class Company {
         return Objects.hash(getCompanyName(), getCompanyAddress(), getCompanyPhoneNumber());
     }
 
-    @Override
-    public String toString() {
-        return "Company{" +
-                "companyId=" + companyId +
-                ", companyName='" + companyName + '\'' +
-                ", companyAddress='" + companyAddress + '\'' +
-                ", companyPhoneNumber='" + companyPhoneNumber + '\'' +
-                ", contactPersonList=" + contactPersonList +
-                ", projectsList=" + projectsList +
-                '}';
-    }
+
 }

@@ -1,5 +1,6 @@
 package the.bug.tech.brasch_management_system.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -7,8 +8,7 @@ import the.bug.tech.brasch_management_system.model.ContactPerson;
 
 import java.util.List;
 
-@Repository
-public interface ContactPersonRepository extends GenericCRUDMethods<ContactPerson, Integer> {
+public interface ContactPersonRepository extends JpaRepository<ContactPerson, Integer> {
 
     @Query("SELECT cp FROM ContactPerson cp JOIN FETCH cp.contactPersonPerson AS p WHERE UPPER(CONCAT(p.firstName, p.lastName)) LIKE UPPER(CONCAT('%', :contactPersonName, '%') )")
     List<ContactPerson> getContactPersonByNameContainsIgnoreCase(@Param("contactPersonName") String contactPersonName);

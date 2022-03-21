@@ -12,14 +12,14 @@ public class ContactPerson {
     private Integer contactPersonId;
 
     @OneToOne(cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER)
+            fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")
     private Person contactPersonPerson;
 
     @ManyToOne(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.REFRESH},
-            fetch = FetchType.EAGER)
+            fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
 
@@ -91,13 +91,5 @@ public class ContactPerson {
         return Objects.hash(getContactPersonPerson());
     }
 
-    @Override
-    public String toString() {
-        return "ContactPerson{" +
-                "contactPersonId=" + contactPersonId +
-                ", contactPersonPerson=" + contactPersonPerson +
-                ", company=" + company +
-                ", projectList=" + projectList +
-                '}';
-    }
+
 }

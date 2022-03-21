@@ -7,17 +7,7 @@ import java.util.concurrent.CompletionStage;
 
 public interface ProjectManagerService {
 
-    CompletionStage<ProjectManager> insertProjectManager(ProjectManager projectManager);
+    List<ProjectManager> getProjectManagerByNameContainsIgnoreCase(String projectManagerName);
 
-    CompletionStage<ProjectManager> getProjectManagerById(Integer projectManagerId);
-
-    CompletionStage<List<ProjectManager>> getAllProjectManager();
-
-    CompletionStage<ProjectManager> updateProjectManager(ProjectManager projectManager);
-
-    CompletionStage<Void> deleteProjectManager(ProjectManager projectManager);
-
-    CompletionStage<List<ProjectManager>> getProjectManagerByNameContainsIgnoreCase(String projectManagerName);
-
-    CompletionStage<List<ProjectManager>> getProjectManagerByProjectContainsIgnoreCase(String projectName);
+    List<ProjectManager> getProjectManagerByProjectContainsIgnoreCase(String projectName);
 }

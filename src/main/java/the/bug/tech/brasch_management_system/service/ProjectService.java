@@ -1,30 +1,18 @@
 package the.bug.tech.brasch_management_system.service;
 
-import io.vavr.control.Option;
 import the.bug.tech.brasch_management_system.model.Project;
 
 import java.util.List;
-import java.util.concurrent.CompletionStage;
 
 public interface ProjectService {
 
-    CompletionStage<Project> insertProject(Project project);
+    List<Project> getProjectByNameContainsIgnoreCase(String projectName);
 
-    CompletionStage<Project> getProjectById(Integer projectId);
+    List<Project> getProjectByAddressContainsIgnoreCase(String projectAddress);
 
-    CompletionStage<List<Project>> getAllProject();
+    List<Project> getProjectByCompanyContainsIgnoreCase(String companyName);
 
-    CompletionStage<Project> updateProject(Project project);
+    List<Project> getProjectByProjectManagerContainsIgnoreCase(String projectManagerName);
 
-    CompletionStage<Void> deleteProject(Project project);
-
-    CompletionStage<List<Project>> getProjectByNameContainsIgnoreCase(String projectName);
-
-    CompletionStage<List<Project>> getProjectByAddressContainsIgnoreCase(String projectAddress);
-
-    CompletionStage<List<Project>> getProjectByCompanyContainsIgnoreCase(String companyName);
-
-    CompletionStage<List<Project>> getProjectByProjectManagerContainsIgnoreCase(String projectManagerName);
-
-    CompletionStage<List<Project>> getProjectByContactPersonContainsIgnoreCase(String contactPersonName);
+    List<Project> getProjectByContactPersonContainsIgnoreCase(String contactPersonName);
 }

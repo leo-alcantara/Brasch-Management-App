@@ -3,57 +3,70 @@ package the.bug.tech.brasch_management_system.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import the.bug.tech.brasch_management_system.exceptions.ResourceNotFoundException;
 import the.bug.tech.brasch_management_system.model.ProjectManager;
-import the.bug.tech.brasch_management_system.repository.ProjectManagerRepositoryAsync;
+import the.bug.tech.brasch_management_system.repository.ProjectManagerRepository;
 
 import java.util.List;
-import java.util.concurrent.CompletionStage;
+import java.util.Optional;
 
 @Service
 public class ProjectManagerServiceImpl implements ProjectManagerService {
 
-    private final ProjectManagerRepositoryAsync projectManagerRepositoryAsync;
+    private final ProjectManagerRepository projectManagerRepository;
 
     @Autowired
-    public ProjectManagerServiceImpl(ProjectManagerRepositoryAsync projectManagerRepositoryAsync) {
-        this.projectManagerRepositoryAsync = projectManagerRepositoryAsync;
+    public ProjectManagerServiceImpl(ProjectManagerRepository projectManagerRepository) {
+        this.projectManagerRepository = projectManagerRepository;
     }
 
-    @Override
     @Transactional
-    public CompletionStage<ProjectManager> insertProjectManager(ProjectManager projectManager) {
-        return projectManagerRepositoryAsync.insertProjectManager(projectManager);
+    public ProjectManager insertProjectManager(ProjectManager projectManager) {
+        return projectManagerRepository.save(projectManager);
     }
 
-    @Override
-    public CompletionStage<ProjectManager> getProjectManagerById(Integer projectManagerId) {
-        return projectManagerRepositoryAsync.getProjectManagerById(projectManagerId);
-    }
-
-    @Override
-    public CompletionStage<List<ProjectManager>> getAllProjectManager() {
-        return projectManagerRepositoryAsync.getAllProjectManagers();
-    }
-
-    @Override
     @Transactional
-    public CompletionStage<ProjectManager> updateProjectManager(ProjectManager projectManager) {
-        return projectManagerRepositoryAsync.updateProjectManager(projectManager);
+    public ProjectManager getProjectManagerById(Integer projectManagerId) {
+        Optional<ProjectManager> foundProjectManager = projectManagerRepository.findById(projectManagerId);
+
+        if (foundProjectManager.isPresent()) {
+            return foundProjectManager.get();
+        } else {
+            throw new ResourceNotFoundException("Could not find Project Manager with id " + projectManagerId);
+        }
     }
 
-    @Override
     @Transactional
-    public CompletionStage<Void> deleteProjectManager(ProjectManager projectManager) {
-        return projectManagerRepositoryAsync.deleteProjectManager(projectManager);
+    public List<ProjectManager> getAllProjectManager() {
+        return projectManagerRepository.findAll();
+    }
+
+    @Transactional
+    public ProjectManager updateProjectManager(Integer projectManagerId, ProjectManager projectManager) {
+
+        Optional<ProjectManager> original = projectManagerRepository.findById(projectManagerId);
+
+        if (original.isPresent()) {
+            original.get().setProjectManagerPerson(projectManager.getProjectManagerPerson());
+            original.get().setProjectList(projectManager.getProjectList());
+            return original.get();
+        } else {
+            throw new ResourceNotFoundException("Could not update Project Manager with id " + projectManagerId);
+        }
+    }
+
+    @Transactional
+    public void deleteProjectManager(Integer projectManagerId) {
+        projectManagerRepository.deleteById(projectManagerId);
     }
 
     @Override
-    public CompletionStage<List<ProjectManager>> getProjectManagerByNameContainsIgnoreCase(String projectManagerName) {
-        return projectManagerRepositoryAsync.getProjectManagerByNameContainsIgnoreCase(projectManagerName);
+    public List<ProjectManager> getProjectManagerByNameContainsIgnoreCase(String projectManagerName) {
+        return projectManagerRepository.getProjectManagerByNameContainsIgnoreCase(projectManagerName);
     }
 
     @Override
-    public CompletionStage<List<ProjectManager>> getProjectManagerByProjectContainsIgnoreCase(String projectName) {
-        return projectManagerRepositoryAsync.getProjectManagerByProjectContainsIgnoreCase(projectName);
+    public List<ProjectManager> getProjectManagerByProjectContainsIgnoreCase(String projectName) {
+        return projectManagerRepository.getProjectManagerByProjectContainsIgnoreCase(projectName);
     }
 }

@@ -24,14 +24,14 @@ public class Project {
     @ManyToOne(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.REFRESH},
-            fetch = FetchType.EAGER)
+            fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
 
     @ManyToOne(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.REFRESH},
-            fetch = FetchType.EAGER)
+            fetch = FetchType.LAZY)
     @JoinColumn(name = "project_manager_id")
     private ProjectManager projectManager;
 
@@ -183,21 +183,6 @@ public class Project {
         return Objects.hash(getProjectName(), getProjectDescription(), getProjectLocal(), getCompany());
     }
 
-    @Override
-    public String toString() {
-        return "Project{" +
-                "projectId=" + projectId +
-                ", projectName='" + projectName + '\'' +
-                ", projectDescription='" + projectDescription + '\'' +
-                ", projectLocal='" + projectLocal + '\'' +
-                ", status=" + status +
-                ", projectedStartDate=" + projectedStartDate +
-                ", projectedConclusionDate=" + projectedConclusionDate +
-                ", company=" + company +
-                ", projectManager=" + projectManager +
-                ", contactPerson=" + contactPersonList +
-                '}';
-    }
 
     public enum Status {
 

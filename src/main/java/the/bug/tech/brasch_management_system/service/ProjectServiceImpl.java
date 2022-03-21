@@ -3,72 +3,99 @@ package the.bug.tech.brasch_management_system.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import the.bug.tech.brasch_management_system.exceptions.ResourceNotFoundException;
 import the.bug.tech.brasch_management_system.model.Project;
-import the.bug.tech.brasch_management_system.repository.ProjectRepositoryAsync;
+import the.bug.tech.brasch_management_system.repository.ProjectRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
-    private final ProjectRepositoryAsync projectRepositoryAsync;
+    private final ProjectRepository projectRepository;
 
     @Autowired
-    public ProjectServiceImpl(ProjectRepositoryAsync projectRepositoryAsync) {
-        this.projectRepositoryAsync = projectRepositoryAsync;
+    public ProjectServiceImpl(ProjectRepository projectRepository) {
+        this.projectRepository = projectRepository;
+    }
+
+    @Transactional
+    public Project insertProject(Project project) {
+        projectRepository.save(project);
+        return project;
+    }
+
+    @Transactional
+    public Project getProjectById(Integer projectId) {
+        Optional<Project> foundProject = projectRepository.findById(projectId);
+
+        if (foundProject.isPresent()) {
+            return foundProject.get();
+        } else {
+            throw new ResourceNotFoundException("Could not find Project with id " + projectId);
+        }
+    }
+
+    @Transactional
+    public List<Project> getAllProject() {
+        return projectRepository.findAll();
+    }
+
+    @Transactional
+    public Project updateProject(Integer projectId, Project project) {
+
+        Optional<Project> original = projectRepository.findById(projectId);
+
+        if (original.isPresent()) {
+            original.get().setProjectName(project.getProjectName());
+            original.get().setProjectDescription(project.getProjectDescription());
+            original.get().setProjectLocal(project.getProjectLocal());
+            original.get().setProjectStatus(project.getProjectStatus());
+            original.get().setProjectedStartDate(project.getProjectedStartDate());
+            original.get().setProjectedConclusionDate(project.getProjectedConclusionDate());
+            original.get().setCompany(project.getCompany());
+            original.get().setProjectManager(project.getProjectManager());
+            original.get().setContactPersonList(project.getContactPersonList());
+            return original.get();
+        } else {
+            throw new ResourceNotFoundException("Could not update Project with id " + projectId);
+        }
+    }
+
+    @Transactional
+    public void deleteProject(Integer projectId) {
+        projectRepository.deleteById(projectId);
     }
 
     @Override
     @Transactional
-    public CompletionStage<Project> insertProject(Project project) {
-        return projectRepositoryAsync.insertProject(project);
-    }
-
-    @Override
-    public CompletionStage<Project> getProjectById(Integer projectId) {
-        return projectRepositoryAsync.getProjectById(projectId);
-    }
-
-    @Override
-    public CompletionStage<List<Project>> getAllProject() {
-        return projectRepositoryAsync.getAllProjects();
+    public List<Project> getProjectByNameContainsIgnoreCase(String projectName) {
+        return projectRepository.getProjectByNameContainsIgnoreCase(projectName);
     }
 
     @Override
     @Transactional
-    public CompletionStage<Project> updateProject(Project project) {
-        return projectRepositoryAsync.updateProject(project);
+    public List<Project> getProjectByAddressContainsIgnoreCase(String projectAddress) {
+        return projectRepository.getProjectByAddressContainsIgnoreCase(projectAddress);
     }
 
     @Override
     @Transactional
-    public CompletionStage<Void> deleteProject(Project project) {
-        return projectRepositoryAsync.deleteProject(project);
+    public List<Project> getProjectByCompanyContainsIgnoreCase(String companyName) {
+        return projectRepository.getProjectByCompanyContainsIgnoreCase(companyName);
     }
 
     @Override
-    public CompletionStage<List<Project>> getProjectByNameContainsIgnoreCase(String projectName) {
-        return projectRepositoryAsync.getProjectByNameContainsIgnoreCase(projectName);
+    @Transactional
+    public List<Project> getProjectByProjectManagerContainsIgnoreCase(String projectManagerName) {
+        return projectRepository.getProjectByProjectManagerContainsIgnoreCase(projectManagerName);
     }
 
     @Override
-    public CompletionStage<List<Project>> getProjectByAddressContainsIgnoreCase(String projectAddress) {
-        return projectRepositoryAsync.getProjectByAddressContainsIgnoreCase(projectAddress);
-    }
-
-    @Override
-    public CompletionStage<List<Project>> getProjectByCompanyContainsIgnoreCase(String companyName) {
-        return projectRepositoryAsync.getProjectByCompanyContainsIgnoreCase(companyName);
-    }
-
-    @Override
-    public CompletionStage<List<Project>> getProjectByProjectManagerContainsIgnoreCase(String projectManagerName) {
-        return projectRepositoryAsync.getProjectByProjectManagerContainsIgnoreCase(projectManagerName);
-    }
-
-    @Override
-    public CompletionStage<List<Project>> getProjectByContactPersonContainsIgnoreCase(String contactPersonName) {
-        return projectRepositoryAsync.getProjectByContactPersonContainsIgnoreCase(contactPersonName);
+    @Transactional
+    public List<Project> getProjectByContactPersonContainsIgnoreCase(String contactPersonName) {
+        return projectRepository.getProjectByContactPersonContainsIgnoreCase(contactPersonName);
     }
 }

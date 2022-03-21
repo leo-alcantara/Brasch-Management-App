@@ -12,7 +12,7 @@ public class ProjectManager {
     private Integer projectManagerId;
 
     @OneToOne(cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER)
+            fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")
     private Person projectManagerPerson;
 
@@ -76,12 +76,4 @@ public class ProjectManager {
         return Objects.hash(getProjectManagerPerson());
     }
 
-    @Override
-    public String toString() {
-        return "ProjectManager{" +
-                "projectManagerId=" + projectManagerId +
-                ", projectManagerPerson=" + projectManagerPerson +
-                ", projectList=" + projectList +
-                '}';
-    }
 }

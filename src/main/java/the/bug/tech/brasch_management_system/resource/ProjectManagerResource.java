@@ -1,27 +1,20 @@
 package the.bug.tech.brasch_management_system.resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
-import the.bug.tech.brasch_management_system.util.Result;
+import the.bug.tech.brasch_management_system.model.ProjectManager;
 import the.bug.tech.brasch_management_system.model.dto.ProjectManagerDto;
 import the.bug.tech.brasch_management_system.service.EntityDtoMapper;
 import the.bug.tech.brasch_management_system.service.ProjectManagerServiceImpl;
-import the.bug.tech.brasch_management_system.util.Responses;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/projectManager")
 public class ProjectManagerResource {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectManagerResource.class);
 
     private final ProjectManagerServiceImpl projectManagerServiceImpl;
     private final EntityDtoMapper mapper;
@@ -32,97 +25,62 @@ public class ProjectManagerResource {
         this.mapper = mapper;
     }
 
-    @Async
     @RequestMapping(produces = "application/json", value = "/create", method = RequestMethod.POST)
-    public CompletableFuture<CompletionStage<ResponseEntity<Result<ProjectManagerDto>>>> create(@RequestParam ProjectManagerDto projectManagerDto) {
-        return CompletableFuture.completedFuture(projectManagerServiceImpl.insertProjectManager(mapper.toProjectManager(projectManagerDto))
-                .thenApply(projectManager -> Responses.ok(projectManagerDto))
-                .exceptionally(throwable -> {
-                    LOGGER.error("Failed to insert project manager = {}", projectManagerDto, throwable);
-                    return Responses.internalServerError();
-                }));
+    public ResponseEntity<ProjectManagerDto> insertProjectManager(@RequestBody ProjectManagerDto projectManagerDto) {
+        ProjectManager insertedProjectManager = projectManagerServiceImpl.insertProjectManager(mapper.toProjectManager(projectManagerDto));
+        ProjectManagerDto insertedProjectManagerDto = mapper.toProjectManagerDto(insertedProjectManager);
+        return ResponseEntity.status(HttpStatus.CREATED).body(insertedProjectManagerDto);
     }
 
-    @Async
-    @RequestMapping(produces = "application/json", value = "/getById", method = RequestMethod.POST)
-    public CompletableFuture<CompletionStage<ResponseEntity<Result<ProjectManagerDto>>>> getProjectManagerById(@RequestParam Integer projectManagerId) {
-        return CompletableFuture.completedFuture(projectManagerServiceImpl.getProjectManagerById(projectManagerId)
-                .thenApply(projectManager -> {
-                    ProjectManagerDto projectManagerDto = mapper.toProjectManagerDto(projectManager);
-                    return Responses.ok(projectManagerDto);
-                }).exceptionally(throwable -> {
-                    LOGGER.error("Failed to get project manager = {}", projectManagerId, throwable);
-                    return Responses.internalServerError();
-                }));
+    @RequestMapping(produces = "application/json", value = "/getById", method = RequestMethod.GET)
+    public ResponseEntity<ProjectManagerDto> getProjectManagerById(@RequestParam Integer projectManagerId) {
+        ProjectManager PMFoundById = projectManagerServiceImpl.getProjectManagerById(projectManagerId);
+        ProjectManagerDto PMFoundByIdDto = mapper.toProjectManagerDto(PMFoundById);
+        return ResponseEntity.ok(PMFoundByIdDto);
     }
 
-    @Async
-    @RequestMapping(produces = "application/json", value = "/getAll", method = RequestMethod.POST)
-    public CompletableFuture<CompletionStage<ResponseEntity<Result<List<ProjectManagerDto>>>>> getAllProjectManagers() {
-        return CompletableFuture.completedFuture(projectManagerServiceImpl.getAllProjectManager()
-                .thenApply(projectManagers -> {
-                    List<ProjectManagerDto> projectManagerDtoList = projectManagers
-                            .stream()
-                            .map(mapper::toProjectManagerDto)
-                            .collect(Collectors.toList());
-                    return Responses.ok(projectManagerDtoList);
-                }).exceptionally(throwable -> {
-                    LOGGER.error("Failed to get project managers.", throwable);
-                    return Responses.internalServerError();
-                }));
+    @RequestMapping(produces = "application/json", value = "/getAll", method = RequestMethod.GET)
+    public ResponseEntity<List<ProjectManagerDto>> getAllProjectManagers() {
+        List<ProjectManager> projectManagers = projectManagerServiceImpl.getAllProjectManager();
+        List<ProjectManagerDto> projectManagersDto = projectManagers
+                .stream()
+                .map(mapper::toProjectManagerDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(projectManagersDto);
+
     }
 
-    @Async
     @RequestMapping(produces = "application/json", value = "/update", method = RequestMethod.PUT)
-    public CompletableFuture<CompletionStage<ResponseEntity<Result<ProjectManagerDto>>>> updateProjectManager(@RequestParam ProjectManagerDto projectManagerDto) {
-        return CompletableFuture.completedFuture(projectManagerServiceImpl.updateProjectManager(mapper.toProjectManager(projectManagerDto))
-                .thenApply(projectManager -> Responses.ok(projectManagerDto))
-                .exceptionally(throwable -> {
-                    LOGGER.error("Failed to update project manager = {}", projectManagerDto, throwable);
-                    return Responses.internalServerError();
-                }));
+    public ResponseEntity<ProjectManagerDto> updateProjectManager(Integer projectManagerToUpdateId,
+                                                                  @RequestBody ProjectManagerDto projectManagerDto) {
+        ProjectManager convertedProjectManager = projectManagerServiceImpl.updateProjectManager(projectManagerToUpdateId, mapper.toProjectManager(projectManagerDto));
+        ProjectManagerDto convertedProjectManagerDto = mapper.toProjectManagerDto(convertedProjectManager);
+        return ResponseEntity.ok().body(convertedProjectManagerDto);
     }
 
-    @Async
     @RequestMapping(produces = "application/json", value = "/delete", method = RequestMethod.DELETE)
-    public CompletableFuture<CompletionStage<ResponseEntity<Result<Void>>>> deleteProjectManager(@RequestBody ProjectManagerDto projectManagerDto) {
-        return CompletableFuture.completedFuture(projectManagerServiceImpl.deleteProjectManager(mapper.toProjectManager(projectManagerDto))
-                .thenApply(Responses::ok)
-                .exceptionally(throwable -> {
-                    LOGGER.error("Failed to delete project manager = {}", projectManagerDto, throwable);
-                    return Responses.internalServerError();
-                }));
+    public ResponseEntity<Void> deleteProjectManager(@RequestBody Integer projectManagerId) {
+        projectManagerServiceImpl.deleteProjectManager(projectManagerId);
+        return ResponseEntity.ok().build();
     }
 
-    @Async
     @RequestMapping(produces = "application/json", value = "getByName", method = RequestMethod.GET)
-    public CompletableFuture<CompletionStage<ResponseEntity<Result<List<ProjectManagerDto>>>>> getProjectManagerByNameContainsIgnoreCase(@RequestParam String projectManagerName) {
-        return CompletableFuture.completedFuture(projectManagerServiceImpl.getProjectManagerByNameContainsIgnoreCase(projectManagerName)
-                .thenApply(projectManagers -> {
-                    List<ProjectManagerDto> projectManagerDtoList = projectManagers
-                            .stream()
-                            .map(mapper::toProjectManagerDto)
-                            .collect(Collectors.toList());
-                    return Responses.ok(projectManagerDtoList);
-                }).exceptionally(throwable -> {
-                    LOGGER.error("Failed to ge project manager = {}", projectManagerName, throwable);
-                    return Responses.internalServerError();
-                }));
+    public ResponseEntity<List<ProjectManagerDto>> getProjectManagerByNameContainsIgnoreCase(@RequestParam String projectManagerName) {
+        List<ProjectManager> projectManagersFoundByName = projectManagerServiceImpl.getProjectManagerByNameContainsIgnoreCase(projectManagerName);
+        List<ProjectManagerDto> projectManagersFoundByNameDto = projectManagersFoundByName
+                .stream()
+                .map(mapper::toProjectManagerDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(projectManagersFoundByNameDto);
     }
 
-    @Async
     @RequestMapping(produces = "applicatin/json", value = "getByProject", method = RequestMethod.GET)
-    public CompletableFuture<CompletionStage<ResponseEntity<Result<List<ProjectManagerDto>>>>> getProjectManagerByProjectContainsIgnoreCase(@RequestParam String projectName) {
-        return CompletableFuture.completedFuture(projectManagerServiceImpl.getProjectManagerByProjectContainsIgnoreCase(projectName)
-                .thenApply(projectManagers -> {
-                    List<ProjectManagerDto> projectManagerDtoList = projectManagers
-                            .stream()
-                            .map(mapper::toProjectManagerDto)
-                            .collect(Collectors.toList());
-                    return Responses.ok(projectManagerDtoList);
-                }).exceptionally(throwable -> {
-                    LOGGER.error("Failed to get project manager = {}", projectName, throwable);
-                    return Responses.internalServerError();
-                }));
+    public ResponseEntity<List<ProjectManagerDto>> getProjectManagerByProjectContainsIgnoreCase(@RequestParam String projectName) {
+        List<ProjectManager> projectManagersFoundByProject = projectManagerServiceImpl.getProjectManagerByProjectContainsIgnoreCase(projectName);
+        List<ProjectManagerDto> projectManagersFoundByProjectDto = projectManagersFoundByProject
+                .stream()
+                .map(mapper::toProjectManagerDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(projectManagersFoundByProjectDto);
     }
 }

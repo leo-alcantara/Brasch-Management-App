@@ -1,6 +1,5 @@
 package the.bug.tech.brasch_management_system.service;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @Transactional
-class CompanyServiceImplTest {
+class ProjectServiceImplTest {
 
     @Autowired
     private CompanyServiceImpl companyService;
@@ -55,11 +53,34 @@ class CompanyServiceImplTest {
         projectListTest3 = new ArrayList<>();
         projectListTest4 = new ArrayList<>();
 
+        buildAirport = new Project("Airport", "Build new airport", "Bromma",
+                Project.Status.HAS_NOT_STARTED, LocalDate.parse("2022-12-01"), LocalDate.parse("2026-01-31"),
+                arlanda, jimmy, contactListTest);
+        extendLines = new Project("Extension", "Extend metro lines", "Stockholm",
+                Project.Status.IN_PROGRESS, LocalDate.parse("2021-06-01"), LocalDate.parse("2024-03-25"),
+                metro, jimmy, contactListTest);
+        rebuild = new Project("Rebuild Globen", "Renovate Globens Structure", "Globen",
+                Project.Status.COMPLETED, LocalDate.parse("2016-12-01"), LocalDate.parse("2020-01-31"),
+                globen, jimmy, contactListTest);
+        projectListTest.add(buildAirport);
+        projectListTest2.add(extendLines);
+        projectListTest3.add(rebuild);
+        projectListTest4.add(buildAirport);
+        projectListTest4.add(extendLines);
+        projectListTest4.add(rebuild);
 
         personTestOne = new Person("Denzel Washington", "denzel@denzel.com", "0792654207");
         personTestTwo = new Person("Maximus Decimus Meridius", "maximus@roman.com", "0792574013");
         personTestThree = new Person("Clint Eastwood", "dirt@harry.com", "0799382715");
         personTestFour = new Person("Jimmy Fallon", "jimmy@fallon.com", "0796789542");
+
+
+        denzel = new ContactPerson(personTestOne, arlanda, projectListTest);
+        maximus = new ContactPerson(personTestTwo, metro, projectListTest);
+        clint = new ContactPerson(personTestThree, globen, projectListTest);
+        contactListTest.add(denzel);
+        contactListTest.add(maximus);
+        contactListTest.add(clint);
 
         jimmy = new ProjectManager(personTestFour, projectListTest4);
 
@@ -70,33 +91,12 @@ class CompanyServiceImplTest {
         globen = new Company("Globen", "Globe 30",
                 "0807854367", contactListTest, projectListTest3);
 
-        denzel = new ContactPerson(personTestOne, arlanda, projectListTest);
-        maximus = new ContactPerson(personTestTwo, metro, projectListTest);
-        clint = new ContactPerson(personTestThree, globen, projectListTest);
-
-
-        buildAirport = new Project("Airport", "Build new airport", "Bromma",
-                Project.Status.HAS_NOT_STARTED, LocalDate.parse("2022-12-01"), LocalDate.parse("2026-01-31"),
-                arlanda, jimmy, contactListTest);
-        extendLines = new Project("Extension", "Extend metro lines", "Stockholm",
-                Project.Status.IN_PROGRESS, LocalDate.parse("2021-06-01"), LocalDate.parse("2024-03-25"),
-                metro, jimmy, contactListTest);
-        rebuild = new Project("Rebuild Globen", "Renovate Globens Structure", "Globen",
-                Project.Status.COMPLETED, LocalDate.parse("2016-12-01"), LocalDate.parse("2020-01-31"),
-                globen, jimmy, contactListTest);
-
-        contactListTest.add(denzel);
-        contactListTest.add(maximus);
-        contactListTest.add(clint);
-
-        projectListTest.add(buildAirport);
-        projectListTest2.add(extendLines);
-        projectListTest3.add(rebuild);
-        projectListTest4.add(buildAirport);
-        projectListTest4.add(extendLines);
-        projectListTest4.add(rebuild);
 
         projectManagerService.insertProjectManager(jimmy);
+
+        companyService.insertCompany(arlanda);
+        companyService.insertCompany(metro);
+        companyService.insertCompany(globen);
 
         projectService.insertProject(buildAirport);
         projectService.insertProject(extendLines);
@@ -106,62 +106,59 @@ class CompanyServiceImplTest {
         contactPersonService.insertContactPerson(maximus);
         contactPersonService.insertContactPerson(clint);
 
-        companyService.insertCompany(arlanda);
-        companyService.insertCompany(metro);
-        companyService.insertCompany(globen);
+
     }
 
     @Test
-    void should_get_company_by_company_name_return_list() {
+    void getProjectByNameContainsIgnoreCase() {
         //Arrange
-        List<Company> foundCompany;
+        List<Project> foundProjects;
         //Act
-        foundCompany = companyService.getCompanyByCompanyNameContainsIgnoreCase("Arlanda");
+        foundProjects = projectService.getProjectByNameContainsIgnoreCase("Extension");
         //Assert
-        assertEquals(1, foundCompany.size());
-        assertTrue(foundCompany.contains(arlanda));
-        assertEquals(arlanda, foundCompany.get(0));
+        assertTrue(foundProjects.contains(extendLines));
+        assertEquals("Extension", foundProjects.stream().findFirst().get().getProjectName());
+        assertEquals(1, foundProjects.size());
     }
 
     @Test
-    void should_get_company_by_project_name_return_list() {
+    void getProjectByAddressContainsIgnoreCase() {
         //Arrange
-        List<Company> foundCompany;
+        List<Project> foundProjects;
         //Act
-        foundCompany = companyService.getCompanyByProjectNameContainsIgnoreCase("Extension");
+        foundProjects = projectService.getProjectByAddressContainsIgnoreCase("Bromma");
         //Assert
-        assertFalse(foundCompany.isEmpty());
-        assertEquals(metro, foundCompany.get(0));
-        assertEquals(1, foundCompany.size());
-        assertTrue(foundCompany.contains(metro));
+        assertFalse(foundProjects.isEmpty());
+        assertTrue(foundProjects.contains(buildAirport));
+        assertEquals("Airport", foundProjects.stream().findFirst().get().getProjectName());
     }
 
     @Test
-    void should_get_company_by_contact_person_name_return_list() {
+    void getProjectByCompanyContainsIgnoreCase() {
         //Arrange
-        List<Company> foundCompany;
+        List<Project> foundProjects;
         //Act
-        foundCompany = companyService.getCompanyByContactPersonContainsIgnoreCase("zel");
+        foundProjects = projectService.getProjectByCompanyContainsIgnoreCase("Arlanda");
         //Assert
-        assertFalse(foundCompany.isEmpty());
-        assertEquals(1, foundCompany.size());
-        assertTrue(foundCompany.contains(arlanda));
+        assertFalse(foundProjects.isEmpty());
+        assertTrue(foundProjects.contains(buildAirport));
     }
 
-    /*@AfterEach
-    void tearDown() {
-        companyService.deleteCompanyById(arlanda.getCompanyId());
-        companyService.deleteCompanyById(metro.getCompanyId());
-        companyService.deleteCompanyById(globen.getCompanyId());
+    @Test
+    void getProjectByProjectManagerContainsIgnoreCase() {
+        //Arrange
 
-        projectService.deleteProject(buildAirport.getProjectId());
-        projectService.deleteProject(extendLines.getProjectId());
-        projectService.deleteProject(rebuild.getProjectId());
+        //Act
 
-        contactPersonService.deleteContactPerson(denzel.getContactPersonId());
-        contactPersonService.deleteContactPerson(maximus.getContactPersonId());
-        contactPersonService.deleteContactPerson(clint.getContactPersonId());
+        //Assert
+    }
 
-        projectManagerService.deleteProjectManager(jimmy.getProjectManagerId());
-    }*/
+    @Test
+    void getProjectByContactPersonContainsIgnoreCase() {
+        //Arrange
+
+        //Act
+
+        //Assert
+    }
 }

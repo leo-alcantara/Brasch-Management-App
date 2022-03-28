@@ -16,7 +16,7 @@ public class Company {
 
     @OneToMany(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
-            CascadeType.PERSIST,
+            //CascadeType.PERSIST,
             CascadeType.REFRESH,
             CascadeType.REMOVE},
             fetch = FetchType.LAZY,

@@ -36,15 +36,13 @@ public class EntityDtoMapper {
     }
 
     public Person toPerson(PersonDto personDto) {
-        return new Person(personDto.getFirstName(),
-                personDto.getLastName(),
+        return new Person(personDto.getPersonName(),
                 personDto.getEmail(),
                 personDto.getPhoneNumber());
     }
 
     public PersonDto toPersonDto(Person person) {
-        return new PersonDto(person.getFirstName(),
-                person.getLastName(),
+        return new PersonDto(person.getPersonName(),
                 person.getEmail(),
                 person.getPhoneNumber());
     }

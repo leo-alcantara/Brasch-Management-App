@@ -1,6 +1,5 @@
 package the.bug.tech.brasch_management_system.service;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class CompanyServiceImplTest {
+class ContactPersonServiceImplTest {
 
     @Autowired
     private CompanyServiceImpl companyService;
@@ -112,56 +111,22 @@ class CompanyServiceImplTest {
     }
 
     @Test
-    void should_get_company_by_company_name_return_list() {
-        //Arrange
-        List<Company> foundCompany;
-        //Act
-        foundCompany = companyService.getCompanyByCompanyNameContainsIgnoreCase("Arlanda");
-        //Assert
-        assertEquals(1, foundCompany.size());
-        assertTrue(foundCompany.contains(arlanda));
-        assertEquals(arlanda, foundCompany.get(0));
+    void getContactPersonByNameContainsIgnoreCase() {
     }
 
     @Test
-    void should_get_company_by_project_name_return_list() {
-        //Arrange
-        List<Company> foundCompany;
-        //Act
-        foundCompany = companyService.getCompanyByProjectNameContainsIgnoreCase("Extension");
-        //Assert
-        assertFalse(foundCompany.isEmpty());
-        assertEquals(metro, foundCompany.get(0));
-        assertEquals(1, foundCompany.size());
-        assertTrue(foundCompany.contains(metro));
+    void getContactPersonByCompanyContainsIgnoreCase() {
     }
 
     @Test
-    void should_get_company_by_contact_person_name_return_list() {
+    void getContactPersonByProjectContainsIgnoreCase() {
         //Arrange
-        List<Company> foundCompany;
+        List<ContactPerson> foundPeople;
         //Act
-        foundCompany = companyService.getCompanyByContactPersonContainsIgnoreCase("zel");
+        foundPeople = contactPersonService.getContactPersonByProjectContainsIgnoreCase("Airport");
         //Assert
-        assertFalse(foundCompany.isEmpty());
-        assertEquals(1, foundCompany.size());
-        assertTrue(foundCompany.contains(arlanda));
+        //assertTrue(foundPeople.isEmpty());
+        assertTrue(foundPeople.contains(denzel));
+        assertEquals(6, foundPeople.size());
     }
-
-    /*@AfterEach
-    void tearDown() {
-        companyService.deleteCompanyById(arlanda.getCompanyId());
-        companyService.deleteCompanyById(metro.getCompanyId());
-        companyService.deleteCompanyById(globen.getCompanyId());
-
-        projectService.deleteProject(buildAirport.getProjectId());
-        projectService.deleteProject(extendLines.getProjectId());
-        projectService.deleteProject(rebuild.getProjectId());
-
-        contactPersonService.deleteContactPerson(denzel.getContactPersonId());
-        contactPersonService.deleteContactPerson(maximus.getContactPersonId());
-        contactPersonService.deleteContactPerson(clint.getContactPersonId());
-
-        projectManagerService.deleteProjectManager(jimmy.getProjectManagerId());
-    }*/
 }

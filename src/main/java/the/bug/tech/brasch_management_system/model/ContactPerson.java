@@ -91,5 +91,13 @@ public class ContactPerson {
         return Objects.hash(getContactPersonPerson());
     }
 
-
+    @Override
+    public String toString() {
+        return "ContactPerson{" +
+                "contactPersonId=" + contactPersonId +
+                ", contactPersonPerson=" + contactPersonPerson +
+                ", company=" + company +
+                ", projectList=" + projectList +
+                '}';
+    }
 }

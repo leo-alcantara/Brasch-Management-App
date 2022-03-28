@@ -7,36 +7,25 @@ import java.util.Objects;
 
 public class PersonDto {
 
-    private String firstName;
-    private String lastName;
+    private String personName;
     private String email;
     private String phoneNumber;
 
     @JsonCreator
-    public PersonDto(@JsonProperty("firstName") String firstName,
-                     @JsonProperty("lastName") String lastName,
+    public PersonDto(@JsonProperty("firstName") String personName,
                      @JsonProperty("email") String email,
                      @JsonProperty("phoneNumber") String phoneNumber) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.personName = personName;
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getPersonName() {
+        return personName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPersonName(String personName) {
+        this.personName = personName;
     }
 
     public String getEmail() {
@@ -56,25 +45,24 @@ public class PersonDto {
     }
 
     @Override
-    public String toString() {
-        return "PersonDto{" +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PersonDto personDto = (PersonDto) o;
-        return Objects.equals(getFirstName(), personDto.getFirstName()) && Objects.equals(getLastName(), personDto.getLastName()) && Objects.equals(getEmail(), personDto.getEmail()) && Objects.equals(getPhoneNumber(), personDto.getPhoneNumber());
+        return Objects.equals(getPersonName(), personDto.getPersonName()) && Objects.equals(getEmail(), personDto.getEmail()) && Objects.equals(getPhoneNumber(), personDto.getPhoneNumber());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getFirstName(), getLastName(), getEmail(), getPhoneNumber());
+        return Objects.hash(getPersonName(), getEmail(), getPhoneNumber());
+    }
+
+    @Override
+    public String toString() {
+        return "PersonDto{" +
+                "personName='" + personName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
     }
 }

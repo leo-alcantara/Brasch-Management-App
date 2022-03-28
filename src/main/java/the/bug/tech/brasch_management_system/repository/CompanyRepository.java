@@ -12,11 +12,12 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
     @Query("SELECT c FROM Company c WHERE UPPER(c.companyName) LIKE UPPER(CONCAT('%', :companyName, '%'))")
     List<Company> getCompanyByCompanyNameContainsIgnoreCase(@Param("companyName") String companyName);
 
-    @Query("SELECT c FROM Company c JOIN FETCH c.projectsList AS p WHERE UPPER(p.projectName) LIKE UPPER(CONCAT('%', :projectName, '%'))")
+    @Query("SELECT c FROM Company c JOIN Project p ON c.companyId = p.company.companyId WHERE UPPER(p.projectName) LIKE UPPER(CONCAT('%', :projectName, '%'))")
     List<Company> getCompanyByProjectNameContainsIgnoreCase(@Param("projectName") String projectName);
 
-    @Query("SELECT c FROM Company c JOIN FETCH c.contactPersonList AS cp WHERE " +
-            "UPPER(CONCAT(cp.contactPersonPerson.firstName, cp.contactPersonPerson.lastName)) LIKE UPPER(CONCAT('%', :contactPersonName, '%'))")
+    //@Query("SELECT c FROM Company c JOIN FETCH c.contactPersonList AS cp WHERE " +
+     //       "UPPER(cp.contactPersonPerson.personName) LIKE UPPER(CONCAT('%', :contactPersonName, '%'))")
+    @Query("SELECT c FROM Company c JOIN FETCH ContactPerson cp ON c.companyId = cp.company.companyId " +
+            "WHERE UPPER(cp.contactPersonPerson.personName) LIKE UPPER(CONCAT('%', :contactPersonName, '%'))")
     List<Company> getCompanyByContactPersonContainsIgnoreCase(@Param("contactPersonName") String contactPersonName);
-
 }

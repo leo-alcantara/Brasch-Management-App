@@ -76,4 +76,12 @@ public class ProjectManager {
         return Objects.hash(getProjectManagerPerson());
     }
 
+    @Override
+    public String toString() {
+        return "ProjectManager{" +
+                "projectManagerId=" + projectManagerId +
+                ", projectManagerPerson=" + projectManagerPerson +
+                ", projectList=" + projectList +
+                '}';
+    }
 }

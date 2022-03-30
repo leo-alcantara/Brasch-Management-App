@@ -41,9 +41,9 @@ public class Project {
             CascadeType.MERGE,
             CascadeType.REFRESH},
             fetch = FetchType.LAZY)
-    @JoinTable(name = "projects_and_contact_person"
-            , joinColumns = @JoinColumn(name = "project_id")
-            , inverseJoinColumns = @JoinColumn(name = "contact_person_id"))
+    @JoinTable(name = "projects_and_contact_person",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "contact_person_id"))
     private List<ContactPerson> contactPersonList;
 
     public Project() {

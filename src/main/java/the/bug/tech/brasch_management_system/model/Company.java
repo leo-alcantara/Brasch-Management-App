@@ -16,9 +16,7 @@ public class Company {
 
     @OneToMany(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
-            //CascadeType.PERSIST,
-            CascadeType.REFRESH,
-            CascadeType.REMOVE},
+            CascadeType.REFRESH},
             fetch = FetchType.LAZY,
             mappedBy = "company")
     private List<ContactPerson> contactPersonList;

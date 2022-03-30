@@ -111,7 +111,7 @@ class ProjectManagerServiceImplTest {
     }
 
     @Test
-    void getProjectManagerByNameContainsIgnoreCase() {
+    void should_get_project_managers_by_name_return_list() {
         //Arrange
         List<ProjectManager> foundManagers;
         //Act
@@ -122,7 +122,7 @@ class ProjectManagerServiceImplTest {
     }
 
     @Test
-    void getProjectManagerByProjectContainsIgnoreCase() {
+    void should_get_project_managers_by_project_return_list() {
         //Arrange
         List<ProjectManager> foundManagers;
         //Act

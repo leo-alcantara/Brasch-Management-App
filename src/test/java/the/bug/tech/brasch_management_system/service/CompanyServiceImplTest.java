@@ -1,6 +1,5 @@
 package the.bug.tech.brasch_management_system.service;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,21 +146,4 @@ class CompanyServiceImplTest {
         assertEquals(1, foundCompany.size());
         assertTrue(foundCompany.contains(arlanda));
     }
-
-    /*@AfterEach
-    void tearDown() {
-        companyService.deleteCompanyById(arlanda.getCompanyId());
-        companyService.deleteCompanyById(metro.getCompanyId());
-        companyService.deleteCompanyById(globen.getCompanyId());
-
-        projectService.deleteProject(buildAirport.getProjectId());
-        projectService.deleteProject(extendLines.getProjectId());
-        projectService.deleteProject(rebuild.getProjectId());
-
-        contactPersonService.deleteContactPerson(denzel.getContactPersonId());
-        contactPersonService.deleteContactPerson(maximus.getContactPersonId());
-        contactPersonService.deleteContactPerson(clint.getContactPersonId());
-
-        projectManagerService.deleteProjectManager(jimmy.getProjectManagerId());
-    }*/
 }

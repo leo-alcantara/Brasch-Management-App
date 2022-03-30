@@ -15,12 +15,12 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
     @Query("SELECT p FROM Project p WHERE UPPER(p.projectLocal) LIKE UPPER(CONCAT('%', :projectAddress, '%'))")
     List<Project> getProjectByAddressContainsIgnoreCase(@Param("projectAddress") String projectAddress);
 
-    @Query("SELECT p FROM Project p JOIN FETCH p.company AS c WHERE UPPER(c.companyName) LIKE UPPER(concat('%', :companyName, '%'))")
-    //@Query("SELECT p FROM Project p JOIN Company c ON p.company.companyId = c.companyId " +
-    //        "WHERE UPPER(c.companyName) LIKE UPPER(concat('%', :companyName, '%'))")
+    @Query("SELECT p FROM Project p JOIN Company c ON c.companyId = p.company.companyId " +
+            "WHERE UPPER(c.companyName) LIKE UPPER(CONCAT('%', :companyName, '%'))")
     List<Project> getProjectByCompanyContainsIgnoreCase(@Param("companyName") String companyName);
 
-    @Query("SELECT p FROM Project p JOIN FETCH p.projectManager AS pm WHERE UPPER(pm.projectManagerPerson.personName) LIKE UPPER(CONCAT('%',:projectManagerName,'%'))")
+    @Query("SELECT p FROM Project p JOIN ProjectManager pm ON p.projectManager.projectManagerPerson.personId = pm.projectManagerPerson.personId " +
+            "WHERE UPPER(pm.projectManagerPerson.personName) LIKE UPPER(CONCAT('%', :projectManagerName, '%') ) ")
     List<Project> getProjectByProjectManagerContainsIgnoreCase(@Param("projectManagerName") String projectManagerName);
 
     @Query("SELECT p FROM Project p JOIN FETCH p.contactPersonList AS cp WHERE UPPER(cp.contactPersonPerson.personName) LIKE UPPER(CONCAT('%', :contactPersonName ,'%'))")
